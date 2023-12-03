@@ -1,0 +1,71 @@
+@import "@/styles/mixins"
+
+.listofcars
+  @include container
+
+  &__address
+    background-color: #fff
+    display: flex
+    align-items: center
+    justify-content: space-between
+    border-radius: 15px
+    padding: 25px
+    @media (max-width: 900px)
+      padding: 15px
+
+    div
+      background-color: #F0F2F7
+      padding: 15px
+      width: 32%
+      border-radius: 10px
+      color: #747480
+      display: flex
+      align-items: center
+      gap: 5px
+      @media (max-width: 900px)
+        font-size: 8px
+        padding: 10px
+
+  &__taxis
+    p
+      margin: 12px 0
+      font-weight: 700
+      font-size: 16px
+      line-height: 20px
+      @media (max-width: 600px)
+        font-size: 10px
+        font-weight: 100
+        margin: 0
+        margin-top: 10px
+
+    h1
+      font-weight: 700
+      font-size: 42px
+      line-height: 40px
+      @media (max-width: 900px)
+        font-size: 30px
+      @media (max-width: 600px)
+        font-size: 13px
+
+
+      span
+        color: #01c3a7
+
+  &__cards
+    background-color: #fff
+    padding: 15px
+    border-radius: 15px
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,.12), 0 2px 4px 0 rgba(0,0,0,.04)
+
+  &__card
+    display: flex
+    align-items: center
+    justify-content: space-between
+    gap: 5px
+
+    p
+      margin: 0
+
+  &__direction
+    display: flex
+    align-items: center
