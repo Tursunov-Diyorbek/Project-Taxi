@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "from": "Tashkent",
+      "to": "Andijan"
+    },
+    {
+      "id": 2,
+      "from": "Andijon",
+      "to": "Tashkent"
+    },
+    {
+      "id": 3,
+      "from": "Samarqand",
+      "to": "Tashkent"
+    },
+    {
+      "id": 4,
+      "from": "Jizzax",
+      "to": "Tashkent"
+    }
+  ]
+}
