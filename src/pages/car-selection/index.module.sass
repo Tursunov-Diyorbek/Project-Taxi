@@ -35,37 +35,74 @@
       @media (max-width: 600px)
         font-size: 10px
         font-weight: 100
-        margin: 0
         margin-top: 10px
 
     h1
       font-weight: 700
       font-size: 42px
       line-height: 40px
+      display: flex
+      align-items: center
+      flex-wrap: wrap
+      gap: 10px
+      margin: 0
       @media (max-width: 900px)
         font-size: 30px
       @media (max-width: 600px)
         font-size: 13px
 
-
       span
+        display: flex
+        align-items: center
         color: #01c3a7
 
   &__cards
-    background-color: #fff
-    padding: 15px
-    border-radius: 15px
-    box-shadow: 0 4px 10px 0 rgba(0,0,0,.12), 0 2px 4px 0 rgba(0,0,0,.04)
+    margin-top: 50px
+    @media (max-width: 600px)
+      margin-top: 0
 
   &__card
     display: flex
     align-items: center
     justify-content: space-between
-    gap: 5px
+    background-color: #fff
+    padding: 15px
+    border-radius: 15px
+    margin-top: 20px
+    box-shadow: 0 4px 10px 0 rgba(0,0,0,.12), 0 2px 4px 0 rgba(0,0,0,.04)
+    @media (max-width: 900px)
+      display: block
 
     p
       margin: 0
 
+    a
+      text-decoration: none
+
+    button
+      @media (max-width: 900px)
+        width: 100%
+
+  &__nineHundredpx
+    display: flex
+    align-items: center
+    justify-content: space-between
+    @media (max-width: 900px)
+      margin: 10px 0
+
+    p:nth-child(1)
+      display: none
+      @media (max-width: 900px)
+        display: block
+
   &__direction
     display: flex
     align-items: center
+    gap: 10px
+    @media (max-width: 900px)
+      justify-content: space-between
+
+    p
+      font-weight: 700
+      font-size: 20px
+      line-height: 36px
