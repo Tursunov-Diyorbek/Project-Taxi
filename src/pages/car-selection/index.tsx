@@ -7,6 +7,7 @@ import { HiArrowLongRight } from "react-icons/hi2";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 import { Button } from "antd";
+import Layout from "@/components/Layout";
 
 export default function CarSelection() {
   return (
@@ -15,6 +16,7 @@ export default function CarSelection() {
         <title>Avtomobil tanlash</title>
       </Head>
       <main>
+        <Layout />
         <Steps />
         <div className={styles.listofcars}>
           <div className={styles.listofcars__address}>
