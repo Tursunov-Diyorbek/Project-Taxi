@@ -1,4 +1,3 @@
-// index.tsx
 import Steps from "@/components/Steps";
 import React from "react";
 import styles from "./index.module.sass";
@@ -12,23 +11,19 @@ import {
   MdConnectWithoutContact,
 } from "react-icons/md";
 import { css } from "@emotion/css";
-import { SvgArrow, SvgArrowDown } from "./svgArrow";
 import { FaUserCircle, FaRegUser } from "react-icons/fa";
-
-const handleCallClick = () => {
-  const phoneNumber = "(90)000-00-00"; // Replace this with your desired phone number
-  window.location.href = `tel:${phoneNumber}`;
-};
-
-const handleTelegramClick = () => {
-  const telegramLink = "https://t.me/your_telegram_chat"; // Replace with your Telegram chat link
-  window.open(telegramLink, "_blank");
-};
+import Head from "next/head";
+import { HiArrowLongRight } from "react-icons/hi2";
+import Layout from "@/components/Layout";
 
 const ChoosePlace = () => {
   return (
     <>
-      <div>
+      <Head>
+        <title>Joy Tanlash</title>
+      </Head>
+      <main>
+        <Layout />
         <Steps />
         <div className={styles.choosePlace}>
           <div>
@@ -57,7 +52,7 @@ const ChoosePlace = () => {
                   </p>
                 </div>
                 <div className={styles.choosePlace__iconSvgRow}>
-                  <SvgArrow />
+                  <HiArrowLongRight />
                 </div>
                 <div className={styles.choosePlace__arrive}>
                   <p className={styles.choosePlace__userTel}>(90)000-00-00</p>
@@ -75,14 +70,12 @@ const ChoosePlace = () => {
                         color: #0175c3;
                         cursor: pointer;
                       `}
-                      onClick={handleTelegramClick}
                     />
                     <MdCall
                       className={css`
                         color: #000000;
                         cursor: pointer;
                       `}
-                      onClick={handleCallClick}
                     />
                   </div>
                 </div>
@@ -98,7 +91,7 @@ const ChoosePlace = () => {
                       `}
                     />
                     <p className={styles.departure2__arriveTime}>
-                      Jo'nash vaqtlari mahalliy vaqt bilan ko'rsatilgan.
+                      {"Jo'nash vaqtlari mahalliy vaqt bilan ko'rsatilgan."}
                     </p>
                   </div>
                   <p className={styles.departure2__time}>13:40pm</p>
@@ -107,48 +100,42 @@ const ChoosePlace = () => {
             </div>
           </div>
           <div>
-            <div
-              className={css`
-                margin: 30px 0px;
-              `}>
-              <h3>Avtomobil(nomi) joyni tanlang</h3>
-            </div>
             <div className={styles.choosePlace__contentInfoOrder}>
+              <h3>Avtomobil(nomi) joyni tanlang</h3>
               <div className={styles.choosePlace__boxInfo2}>
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>
-                    Jami o'rindiqlar
+                    {"Jami o'rindiqlar"}
                   </p>
                   <p>4</p>
                 </div>
+
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>
-                    Bosh o'rindiqlar
+                    {"Bosh o'rindiqlar"}
                   </p>
                   <p>4</p>
                 </div>
+
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>
-                    Band o'rindiqlar
+                    {"Band o'rindiqlar"}
                   </p>
                   <p>0</p>
                 </div>
+
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>Narxi</p>
-                  <p>100,000 so'm</p>
+                  <p>100,000 {"so'm"}</p>
                 </div>
-              </div>
-              <div className={styles.choosePlace__arrowDiv}>
-                <p>Rasmdan 4 tagacha joyni tanlang</p>
-                <SvgArrowDown />
               </div>
               <div className={styles.choosePlace__carDiv}>
                 <img
-                  src="../../../images/car-4.png"
+                  src="../../../Images/car-4.png"
                   alt="Car"
                   className={styles.choosePlace__carDivImage}
                 />
-                
+
                 <Button>
                   <FaRegUser />
                 </Button>
@@ -159,7 +146,7 @@ const ChoosePlace = () => {
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 };

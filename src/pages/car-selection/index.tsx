@@ -5,7 +5,9 @@ import { CiLocationOn } from "react-icons/ci";
 import { BsCalendar2Date } from "react-icons/bs";
 import { HiArrowLongRight } from "react-icons/hi2";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { FaTelegramPlane } from "react-icons/fa";
 import { Button } from "antd";
+import Layout from "@/components/Layout";
 
 export default function CarSelection() {
   return (
@@ -14,6 +16,7 @@ export default function CarSelection() {
         <title>Avtomobil tanlash</title>
       </Head>
       <main>
+        <Layout />
         <Steps />
         <div className={styles.listofcars}>
           <div className={styles.listofcars__address}>
@@ -45,11 +48,27 @@ export default function CarSelection() {
                 <FaArrowRightLong />
                 <p>Samarqand</p>
               </div>
-              <p>Diko</p>
-              <a href="tel: +998995542526">+998995542526</a>
-              <a href="#">Telegram</a>
-              <p>{"100 000 so'm"}</p>
-              <Button>Yuborish</Button>
+              <div className={styles.listofcars__nineHundredpx}>
+                <p>Ism</p>
+                <p>Diko</p>
+              </div>
+              <div className={styles.listofcars__nineHundredpx}>
+                <p>Telefon raqam</p>
+                <a href="tel: +998995542526">+998995542526</a>
+              </div>
+              <div className={styles.listofcars__nineHundredpx}>
+                <p>Telegram</p>
+                <a href="#">
+                  <FaTelegramPlane style={{ fontSize: 17 }} />
+                </a>
+              </div>
+              <div className={styles.listofcars__nineHundredpx}>
+                <p>Narx</p>
+                <p>
+                  {Intl.NumberFormat("en-En").format(100000)} {"so'm"}
+                </p>
+              </div>
+              <Button type={"primary"}>Yuborish</Button>
             </div>
           </div>
         </div>
