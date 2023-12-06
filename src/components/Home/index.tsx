@@ -3,6 +3,8 @@ import { CiLocationOn } from "react-icons/ci";
 import { Space, Select, DatePicker } from "antd";
 import axios from "axios";
 import styles from "./index.module.sass";
+import { Button, Layout } from "antd";
+import { FiSearch } from "react-icons/fi";
 
 interface DataType {
   id: number;
@@ -36,17 +38,33 @@ const HomePage = () => {
   const handleToChange = (value: string) => {
     setSelectedTo(value);
   };
+  const { Header } = Layout;
+  const { Footer } = Layout;
 
   return (
-    <div className={styles.listofcars}>
-      <div className={styles.listofcars_card}>
+    <>
+      <div className={styles.homepages_section}>
+        <Header className={styles.header}>
+          <div className={styles.logo}>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDXSn2aspVWSGPMfI1kB81YXZ1xd2HhJFkmXmU2A59VLaMHNv0ZceEk2fbT0OHuk77gHc&usqp=CAU"
+              alt="Logo"
+            />
+          </div>
+          <div className={styles.button}>
+            <Button type="primary">Sign In</Button>
+          </div>
+        </Header>
+      </div>
+
+      <div className={styles.homepages_card}>
         <Select
           suffixIcon={<CiLocationOn />}
           placeholder="Qayerdan"
           value={selectedFrom}
           showSearch
           allowClear
-          style={{ width: "100%" }}
+          style={{ width: "25%" }}
           onChange={handleFromChange}
         >
           {data.map((item) => (
@@ -60,7 +78,7 @@ const HomePage = () => {
           suffixIcon={<CiLocationOn />}
           placeholder="Qayerga"
           value={selectedTo}
-          style={{ width: "100%" }}
+          style={{ width: "25%" }}
           showSearch
           allowClear
           onChange={handleToChange}
@@ -75,8 +93,13 @@ const HomePage = () => {
         <Space direction="vertical">
           <DatePicker />
         </Space>
+
+        <Button>
+          <FiSearch />
+        </Button>
       </div>
-    </div>
+      <Footer className="footer">This is the footer content.</Footer>
+    </>
   );
 };
 
