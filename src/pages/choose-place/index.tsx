@@ -1,7 +1,7 @@
 import Steps from "@/components/Steps";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./index.module.sass";
-import { Tag, Button } from "antd";
+import { Tag, Button, Form, Input, Select } from "antd";
 import { SiTelegram } from "react-icons/si";
 import {
   MdOutlineAccessTime,
@@ -11,12 +11,49 @@ import {
   MdConnectWithoutContact,
 } from "react-icons/md";
 import { css } from "@emotion/css";
-import { FaUserCircle, FaRegUser } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import Head from "next/head";
 import { HiArrowLongRight } from "react-icons/hi2";
 import Layout from "@/components/Layout";
 
+type FieldType = {
+  surname?: string;
+  name?: string;
+  age?: number;
+  womenandboy?: string;
+};
+
 const ChoosePlace = () => {
+  const [plaseOne, setPlaseOne] = useState<boolean>(false);
+  const [plaseTwo, setPlaseTwo] = useState<boolean>(false);
+  const [plaseThree, setPlaseThree] = useState<boolean>(false);
+  const [plaseFour, setPlaseFour] = useState<boolean>(false);
+
+  const placeButtonOne = () => {
+    if (plaseOne) {
+      setPlaseOne(false);
+    } else setPlaseOne(true);
+  };
+  const placeButtonTwo = () => {
+    if (plaseTwo) {
+      setPlaseTwo(false);
+    } else setPlaseTwo(true);
+  };
+  const placeButtonThree = () => {
+    if (plaseThree) {
+      setPlaseThree(false);
+    } else setPlaseThree(true);
+  };
+  const placeButtonFour = () => {
+    if (plaseFour) {
+      setPlaseFour(false);
+    } else setPlaseFour(true);
+  };
+
+  const onFinish = (values: any) => {
+    console.log("Success:", values);
+  };
+
   return (
     <>
       <Head>
@@ -136,16 +173,90 @@ const ChoosePlace = () => {
                   className={styles.choosePlace__carDivImage}
                 />
 
-                <Button>
-                  <FaRegUser />
-                </Button>
-                <Button></Button>
-                <Button></Button>
-                <Button></Button>
+                <Button onClick={placeButtonThree}>3</Button>
+                <Button onClick={placeButtonOne}>1</Button>
+                <Button onClick={placeButtonFour}>4</Button>
+                <Button onClick={placeButtonTwo}>2</Button>
               </div>
             </div>
           </div>
+          {plaseOne && (
+            <div className={styles.choosePlace__userForm}>
+              <h2>{"1 - O'rindiq"}</h2>
+              <Form onFinish={onFinish} layout="vertical">
+                <Form.Item<FieldType>
+                  label="Familiyasi"
+                  name="surname"
+                  rules={[
+                    { required: true, message: "Please input your username!" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item<FieldType>
+                  label="Ismi"
+                  name="name"
+                  rules={[
+                    { required: true, message: "Please input your username!" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item<FieldType>
+                  label="Yoshi"
+                  name="age"
+                  rules={[
+                    { required: true, message: "Please input your username!" },
+                  ]}
+                >
+                  <Input type={"number"} />
+                </Form.Item>
+                <Form.Item<FieldType>
+                  label="Yoshi"
+                  name="age"
+                  rules={[
+                    { required: true, message: "Please input your username!" },
+                  ]}
+                >
+                  <Select
+                    onChange={onFinish}
+                    style={{ width: 100 }}
+                    options={[
+                      { value: "erkak", label: "Erkak" },
+                      { value: "ayol", label: "Ayol" },
+                    ]}
+                  />
+                </Form.Item>
+              </Form>
+            </div>
+          )}
+          {plaseTwo && (
+            <div className={styles.choosePlace__userForm}>
+              <h2>{"2 - O'rindiq"}</h2>
+            </div>
+          )}
+          {plaseThree && (
+            <div className={styles.choosePlace__userForm}>
+              <h2>{"3 - O'rindiq"}</h2>
+            </div>
+          )}
+          {plaseFour && (
+            <div className={styles.choosePlace__userForm}>
+              <h2>{"4 - O'rindiq"}</h2>
+            </div>
+          )}
         </div>
+        <footer className={styles.footer}>
+          <div className={styles.footer__button}>
+            <Form onFinish={onFinish}>
+              <Form.Item>
+                <Button type="primary" htmlType="submit">
+                  Tasdiqlash
+                </Button>
+              </Form.Item>
+            </Form>
+          </div>
+        </footer>
       </main>
     </>
   );
