@@ -20,7 +20,8 @@ type FieldType = {
   surname?: string;
   name?: string;
   age?: number;
-  womenandboy?: string;
+  number?: string;
+  gender?: string;
 };
 
 const ChoosePlace = () => {
@@ -28,27 +29,6 @@ const ChoosePlace = () => {
   const [plaseTwo, setPlaseTwo] = useState<boolean>(false);
   const [plaseThree, setPlaseThree] = useState<boolean>(false);
   const [plaseFour, setPlaseFour] = useState<boolean>(false);
-
-  const placeButtonOne = () => {
-    if (plaseOne) {
-      setPlaseOne(false);
-    } else setPlaseOne(true);
-  };
-  const placeButtonTwo = () => {
-    if (plaseTwo) {
-      setPlaseTwo(false);
-    } else setPlaseTwo(true);
-  };
-  const placeButtonThree = () => {
-    if (plaseThree) {
-      setPlaseThree(false);
-    } else setPlaseThree(true);
-  };
-  const placeButtonFour = () => {
-    if (plaseFour) {
-      setPlaseFour(false);
-    } else setPlaseFour(true);
-  };
 
   const onFinish = (values: any) => {
     console.log("Success:", values);
@@ -172,11 +152,46 @@ const ChoosePlace = () => {
                   alt="Car"
                   className={styles.choosePlace__carDivImage}
                 />
-
-                <Button onClick={placeButtonThree}>3</Button>
-                <Button onClick={placeButtonOne}>1</Button>
-                <Button onClick={placeButtonFour}>4</Button>
-                <Button onClick={placeButtonTwo}>2</Button>
+                <Button
+                  onClick={() => setPlaseThree(!plaseThree)}
+                  className={css`
+                    background: ${plaseThree ? "black" : "none"};
+                    color: ${plaseThree ? "#fff" : "black"};
+                  `}
+                >
+                  3
+                </Button>
+                <Button
+                  onClick={() => setPlaseOne(!plaseOne)}
+                  className={css`
+                    background: ${plaseOne ? "black" : "none"};
+                    color: ${plaseOne ? "#fff" : "black"};
+                  `}
+                >
+                  {/*<img*/}
+                  {/*  src="../../../Images/photo_2023-12-10_19-35-48-removebg-preview.png"*/}
+                  {/*  alt="rasm"*/}
+                  {/*  style={{ width: "100%" }}*/}
+                  {/*/>*/}1
+                </Button>
+                <Button
+                  onClick={() => setPlaseFour(!plaseFour)}
+                  className={css`
+                    background: ${plaseFour ? "black" : "none"};
+                    color: ${plaseFour ? "#fff" : "black"};
+                  `}
+                >
+                  4
+                </Button>
+                <Button
+                  onClick={() => setPlaseTwo(!plaseTwo)}
+                  className={css`
+                    background: ${plaseTwo ? "black" : "none"};
+                    color: ${plaseTwo ? "#fff" : "black"};
+                  `}
+                >
+                  2
+                </Button>
               </div>
             </div>
           </div>
@@ -212,8 +227,17 @@ const ChoosePlace = () => {
                   <Input type={"number"} />
                 </Form.Item>
                 <Form.Item<FieldType>
-                  label="Yoshi"
-                  name="age"
+                  label="Raqami"
+                  name="number"
+                  rules={[
+                    { required: true, message: "Please input your Number!" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item<FieldType>
+                  label="Jinsi"
+                  name="gender"
                   rules={[
                     { required: true, message: "Please input your username!" },
                   ]}
@@ -248,13 +272,7 @@ const ChoosePlace = () => {
         </div>
         <footer className={styles.footer}>
           <div className={styles.footer__button}>
-            <Form onFinish={onFinish}>
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  Tasdiqlash
-                </Button>
-              </Form.Item>
-            </Form>
+            <Button type="primary">Tasdiqlash</Button>
           </div>
         </footer>
       </main>

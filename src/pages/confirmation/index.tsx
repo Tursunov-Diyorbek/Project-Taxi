@@ -14,6 +14,7 @@ type FieldType = {
 
 export default function Confirmation() {
   const [smsActive, setSMSnotActive] = useState<boolean>(false);
+
   const onFinish = (values: any) => {
     if (!smsActive) {
       console.log(values);
