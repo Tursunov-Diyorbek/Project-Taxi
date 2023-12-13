@@ -1,7 +1,7 @@
 import Steps from "@/components/Steps";
-import React from "react";
+import React, { useState } from "react";
 import styles from "./index.module.sass";
-import { Tag, Button } from "antd";
+import { Tag, Button, Form, Input, Select } from "antd";
 import { SiTelegram } from "react-icons/si";
 import {
   MdOutlineAccessTime,
@@ -11,12 +11,29 @@ import {
   MdConnectWithoutContact,
 } from "react-icons/md";
 import { css } from "@emotion/css";
-import { FaUserCircle, FaRegUser } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import Head from "next/head";
 import { HiArrowLongRight } from "react-icons/hi2";
 import Layout from "@/components/Layout";
 
+type FieldType = {
+  surname?: string;
+  name?: string;
+  age?: number;
+  number?: string;
+  gender?: string;
+};
+
 const ChoosePlace = () => {
+  const [plaseOne, setPlaseOne] = useState<boolean>(false);
+  const [plaseTwo, setPlaseTwo] = useState<boolean>(false);
+  const [plaseThree, setPlaseThree] = useState<boolean>(false);
+  const [plaseFour, setPlaseFour] = useState<boolean>(false);
+
+  const onFinish = (values: any) => {
+    console.log("Success:", values);
+  };
+
   return (
     <>
       <Head>
@@ -135,17 +152,129 @@ const ChoosePlace = () => {
                   alt="Car"
                   className={styles.choosePlace__carDivImage}
                 />
-
-                <Button>
-                  <FaRegUser />
+                <Button
+                  onClick={() => setPlaseThree(!plaseThree)}
+                  className={css`
+                    background: ${plaseThree ? "black" : "none"};
+                    color: ${plaseThree ? "#fff" : "black"};
+                  `}
+                >
+                  3
                 </Button>
-                <Button></Button>
-                <Button></Button>
-                <Button></Button>
+                <Button
+                  onClick={() => setPlaseOne(!plaseOne)}
+                  className={css`
+                    background: ${plaseOne ? "black" : "none"};
+                    color: ${plaseOne ? "#fff" : "black"};
+                  `}
+                >
+                  {/*<img*/}
+                  {/*  src="../../../Images/photo_2023-12-10_19-35-48-removebg-preview.png"*/}
+                  {/*  alt="rasm"*/}
+                  {/*  style={{ width: "100%" }}*/}
+                  {/*/>*/}1
+                </Button>
+                <Button
+                  onClick={() => setPlaseFour(!plaseFour)}
+                  className={css`
+                    background: ${plaseFour ? "black" : "none"};
+                    color: ${plaseFour ? "#fff" : "black"};
+                  `}
+                >
+                  4
+                </Button>
+                <Button
+                  onClick={() => setPlaseTwo(!plaseTwo)}
+                  className={css`
+                    background: ${plaseTwo ? "black" : "none"};
+                    color: ${plaseTwo ? "#fff" : "black"};
+                  `}
+                >
+                  2
+                </Button>
               </div>
             </div>
           </div>
+          {plaseOne && (
+            <div className={styles.choosePlace__userForm}>
+              <h2>{"1 - O'rindiq"}</h2>
+              <Form onFinish={onFinish} layout="vertical">
+                <Form.Item<FieldType>
+                  label="Familiyasi"
+                  name="surname"
+                  rules={[
+                    { required: true, message: "Please input your username!" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item<FieldType>
+                  label="Ismi"
+                  name="name"
+                  rules={[
+                    { required: true, message: "Please input your username!" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item<FieldType>
+                  label="Yoshi"
+                  name="age"
+                  rules={[
+                    { required: true, message: "Please input your username!" },
+                  ]}
+                >
+                  <Input type={"number"} />
+                </Form.Item>
+                <Form.Item<FieldType>
+                  label="Raqami"
+                  name="number"
+                  rules={[
+                    { required: true, message: "Please input your Number!" },
+                  ]}
+                >
+                  <Input />
+                </Form.Item>
+                <Form.Item<FieldType>
+                  label="Jinsi"
+                  name="gender"
+                  rules={[
+                    { required: true, message: "Please input your username!" },
+                  ]}
+                >
+                  <Select
+                    onChange={onFinish}
+                    style={{ width: 100 }}
+                    options={[
+                      { value: "erkak", label: "Erkak" },
+                      { value: "ayol", label: "Ayol" },
+                    ]}
+                  />
+                </Form.Item>
+              </Form>
+            </div>
+          )}
+          {plaseTwo && (
+            <div className={styles.choosePlace__userForm}>
+              <h2>{"2 - O'rindiq"}</h2>
+            </div>
+          )}
+          {plaseThree && (
+            <div className={styles.choosePlace__userForm}>
+              <h2>{"3 - O'rindiq"}</h2>
+            </div>
+          )}
+          {plaseFour && (
+            <div className={styles.choosePlace__userForm}>
+              <h2>{"4 - O'rindiq"}</h2>
+            </div>
+          )}
         </div>
+        <footer className={styles.footer}>
+          <div className={styles.footer__button}>
+            <Button type="primary">Tasdiqlash</Button>
+          </div>
+        </footer>
       </main>
     </>
   );

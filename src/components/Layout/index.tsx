@@ -63,11 +63,11 @@ export default function Layout() {
                       <img
                         src="../../../Images/Flag_of_Russia.svg.png"
                         alt="Uzb"
-                        className={css`
-                          width: 15px;
-                          height: 15px;
-                          border-radius: 3px;
-                        `}
+                        style={{
+                          width: "15px",
+                          height: "15px",
+                          borderRadius: "3px",
+                        }}
                       />{" "}
                       Rus
                     </span>

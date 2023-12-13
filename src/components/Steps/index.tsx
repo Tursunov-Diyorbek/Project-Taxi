@@ -12,20 +12,39 @@ export default function Steps() {
           className={
             pathname === "/choose-place"
               ? styles.carSelection__spanActive
-              : styles.carSelection__spanNotActive
+              : styles.carSelection__spanNotActive &&
+                  pathname === "/confirmation"
+                ? styles.carSelection__spanActive
+                : styles.carSelection__spanNotActive
           }
         ></span>
         <div
           className={
             pathname === "/choose-place"
               ? styles.carSelection__active
-              : styles.carSelection__notActive
+              : styles.carSelection__notActive && pathname === "/confirmation"
+                ? styles.carSelection__active
+                : styles.carSelection__notActive
           }
         >
           Joy tanlash
         </div>
-        <span className={styles.carSelection__spanNotActive}></span>
-        <div className={styles.carSelection__notActive}>Tasdiqlash</div>
+        <span
+          className={
+            pathname === "/confirmation"
+              ? styles.carSelection__spanActive
+              : styles.carSelection__spanNotActive
+          }
+        ></span>
+        <div
+          className={
+            pathname === "/confirmation"
+              ? styles.carSelection__active
+              : styles.carSelection__notActive
+          }
+        >
+          Tasdiqlash
+        </div>
       </div>
     </div>
   );
