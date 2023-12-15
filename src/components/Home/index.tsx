@@ -3,8 +3,10 @@ import { Select, DatePicker, Button } from "antd";
 import { CiCalendarDate, CiSearch } from "react-icons/ci";
 import type { DatePickerProps } from "antd";
 import { useRouter } from "next/router";
+import { useTranslations } from "next-intl";
 
 export default function HomePage() {
+  const t = useTranslations();
   const router = useRouter();
 
   const handleChange = (value: string) => {
@@ -22,7 +24,7 @@ export default function HomePage() {
           <div className={styles.homePage__header}>
             <div className={styles.homePage__headerText}>
               <h3>My Taxi</h3>
-              <p>Bizda xammasi qulay va xamyonbop</p>
+              <p>{t("Bizda xammasi qulay va hamyonbop")}</p>
             </div>
           </div>
           <div className={styles.homePage__direction}>
@@ -52,7 +54,7 @@ export default function HomePage() {
                 showSearch
                 bordered={false}
                 className={styles.homePage__where}
-                placeholder={"Qayerdan"}
+                placeholder={t("Qayerdan")}
                 options={[
                   {
                     value: "toshkent",
@@ -91,7 +93,7 @@ export default function HomePage() {
                 showSearch
                 bordered={false}
                 className={styles.homePage__where}
-                placeholder={"Qayerga"}
+                placeholder={t("Qayerga")}
                 options={[
                   {
                     value: "toshkent",
@@ -109,7 +111,7 @@ export default function HomePage() {
               <DatePicker
                 onChange={onChange}
                 bordered={false}
-                placeholder={"Ketish vaqti"}
+                placeholder={t("Ketish vaqti")}
                 className={styles.homePage__where}
                 format={"DD.MM.YYYY"}
               />

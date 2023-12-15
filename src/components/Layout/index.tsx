@@ -1,18 +1,33 @@
 import styles from "./index.module.sass";
 import { css } from "@emotion/css";
-import { Space, Select, Button, Typography } from "antd";
-import { usePathname } from "next/navigation";
+import { Space, Select } from "antd";
 import { PiUserCircleLight } from "react-icons/pi";
-import { useTranslation } from "react-i18next";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 
 export default function Layout() {
+  const t = useTranslations();
+  const { locale, locales, push } = useRouter();
   const pathname = usePathname();
-  const { t, i18n } = useTranslation();
 
-  const changeLng = (lng: string) => {
-    i18n.changeLanguage(lng);
+  const changeLanguage = (value: string) => {
+    if (pathname === "/") {
+      push("/", undefined, { locale: value });
+    } else if (pathname === "/car-selection") {
+      push("/car-selection", undefined, { locale: value });
+    } else if (pathname === "/choose-place") {
+      push("/choose-place", undefined, { locale: value });
+    } else if (pathname === "/confirmation") {
+      push("/confirmation", undefined, { locale: value });
+    } else if (pathname === "/taxi-page") {
+      push("/taxi-page", undefined, { locale: value });
+    } else if (pathname === "/auth/login") {
+      push("/auth/login", undefined, { locale: value });
+    } else if (pathname === "/auth/register") {
+      push("/auth/register", undefined, { locale: value });
+    }
   };
 
   return (
@@ -43,8 +58,8 @@ export default function Layout() {
         >
           <Space wrap>
             <Select
-              defaultValue={"uz"}
-              onChange={changeLng}
+              defaultValue={locale}
+              onChange={changeLanguage}
               options={[
                 {
                   value: "uz",
@@ -106,8 +121,7 @@ export default function Layout() {
             `}
           >
             <PiUserCircleLight />
-            {/*{t("Kirish")}*/}
-            Kirish
+            {t("Kirish")}
           </Link>
         </div>
       </div>

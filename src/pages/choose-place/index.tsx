@@ -1,7 +1,7 @@
 import Steps from "@/components/Steps";
 import React, { useState } from "react";
 import styles from "./index.module.sass";
-import { Tag, Button, Form, Input, Select } from "antd";
+import { Tag, Button } from "antd";
 import { SiTelegram } from "react-icons/si";
 import {
   MdOutlineAccessTime,
@@ -16,9 +16,12 @@ import Head from "next/head";
 import { HiArrowLongRight } from "react-icons/hi2";
 import Layout from "@/components/Layout";
 import { useRouter } from "next/router";
+import { useTranslations } from "next-intl";
+import { GetStaticPropsContext } from "next";
 
-const ChoosePlace = () => {
+export default function ChoosePlace() {
   const router = useRouter();
+  const t = useTranslations();
 
   const [plaseOne, setPlaseOne] = useState<boolean>(false);
   const [plaseTwo, setPlaseTwo] = useState<boolean>(false);
@@ -32,7 +35,7 @@ const ChoosePlace = () => {
   return (
     <>
       <Head>
-        <title>Joy Tanlash</title>
+        <title>{t("Joy tanlash")}</title>
       </Head>
       <main>
         <Layout />
@@ -113,32 +116,32 @@ const ChoosePlace = () => {
           </div>
           <div>
             <div className={styles.choosePlace__contentInfoOrder}>
-              <h3>Avtomobil(nomi) joyni tanlang</h3>
+              <h3>{t("Avtomobil (nomi) joyni tanlang")}</h3>
               <div className={styles.choosePlace__boxInfo2}>
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>
-                    {"Jami o'rindiqlar"}
+                    {t("Jami o'rindiqlar")}
                   </p>
                   <p>4</p>
                 </div>
 
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>
-                    {"Bosh o'rindiqlar"}
+                    {t("Bo'sh o'rindiqlar")}
                   </p>
                   <p>4</p>
                 </div>
 
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>
-                    {"Band o'rindiqlar"}
+                    {t("Band o'rindiqlar")}
                   </p>
                   <p>0</p>
                 </div>
 
                 <div className={styles.choosePlace__orderInfo}>
-                  <p className={styles.choosePlace__totalText}>Narxi</p>
-                  <p>100,000 {"so'm"}</p>
+                  <p className={styles.choosePlace__totalText}>{t("Narxi")}</p>
+                  <p>100,000 {t("so'm")}</p>
                 </div>
               </div>
               <div className={styles.choosePlace__carDiv}>
@@ -190,13 +193,20 @@ const ChoosePlace = () => {
         <footer className={styles.footer}>
           <div className={styles.footer__button}>
             <Button type="primary" onClick={() => router.push("/confirmation")}>
-              Tasdiqlash
+              {t("Tasdiqlash")}
             </Button>
           </div>
         </footer>
       </main>
     </>
   );
-};
+}
 
-export default ChoosePlace;
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../messages/${context.locale}.json`))
+        .default,
+    },
+  };
+}
