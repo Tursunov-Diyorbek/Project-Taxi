@@ -15,16 +15,11 @@ import { FaUserCircle } from "react-icons/fa";
 import Head from "next/head";
 import { HiArrowLongRight } from "react-icons/hi2";
 import Layout from "@/components/Layout";
-
-type FieldType = {
-  surname?: string;
-  name?: string;
-  age?: number;
-  number?: string;
-  gender?: string;
-};
+import { useRouter } from "next/router";
 
 const ChoosePlace = () => {
+  const router = useRouter();
+
   const [plaseOne, setPlaseOne] = useState<boolean>(false);
   const [plaseTwo, setPlaseTwo] = useState<boolean>(false);
   const [plaseThree, setPlaseThree] = useState<boolean>(false);
@@ -168,11 +163,7 @@ const ChoosePlace = () => {
                     color: ${plaseOne ? "#fff" : "black"};
                   `}
                 >
-                  {/*<img*/}
-                  {/*  src="../../../Images/photo_2023-12-10_19-35-48-removebg-preview.png"*/}
-                  {/*  alt="rasm"*/}
-                  {/*  style={{ width: "100%" }}*/}
-                  {/*/>*/}1
+                  1
                 </Button>
                 <Button
                   onClick={() => setPlaseFour(!plaseFour)}
@@ -195,84 +186,12 @@ const ChoosePlace = () => {
               </div>
             </div>
           </div>
-          {plaseOne && (
-            <div className={styles.choosePlace__userForm}>
-              <h2>{"1 - O'rindiq"}</h2>
-              <Form onFinish={onFinish} layout="vertical">
-                <Form.Item<FieldType>
-                  label="Familiyasi"
-                  name="surname"
-                  rules={[
-                    { required: true, message: "Please input your username!" },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item<FieldType>
-                  label="Ismi"
-                  name="name"
-                  rules={[
-                    { required: true, message: "Please input your username!" },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item<FieldType>
-                  label="Yoshi"
-                  name="age"
-                  rules={[
-                    { required: true, message: "Please input your username!" },
-                  ]}
-                >
-                  <Input type={"number"} />
-                </Form.Item>
-                <Form.Item<FieldType>
-                  label="Raqami"
-                  name="number"
-                  rules={[
-                    { required: true, message: "Please input your Number!" },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item<FieldType>
-                  label="Jinsi"
-                  name="gender"
-                  rules={[
-                    { required: true, message: "Please input your username!" },
-                  ]}
-                >
-                  <Select
-                    onChange={onFinish}
-                    style={{ width: 100 }}
-                    options={[
-                      { value: "erkak", label: "Erkak" },
-                      { value: "ayol", label: "Ayol" },
-                    ]}
-                  />
-                </Form.Item>
-              </Form>
-            </div>
-          )}
-          {plaseTwo && (
-            <div className={styles.choosePlace__userForm}>
-              <h2>{"2 - O'rindiq"}</h2>
-            </div>
-          )}
-          {plaseThree && (
-            <div className={styles.choosePlace__userForm}>
-              <h2>{"3 - O'rindiq"}</h2>
-            </div>
-          )}
-          {plaseFour && (
-            <div className={styles.choosePlace__userForm}>
-              <h2>{"4 - O'rindiq"}</h2>
-            </div>
-          )}
         </div>
         <footer className={styles.footer}>
           <div className={styles.footer__button}>
-            <Button type="primary">Tasdiqlash</Button>
+            <Button type="primary" onClick={() => router.push("/confirmation")}>
+              Tasdiqlash
+            </Button>
           </div>
         </footer>
       </main>

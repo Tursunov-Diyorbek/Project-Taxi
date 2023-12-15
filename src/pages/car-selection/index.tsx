@@ -8,8 +8,14 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 import { Button } from "antd";
 import Layout from "@/components/Layout";
+import dayjs from "dayjs";
+import { useRouter } from "next/router";
 
 export default function CarSelection() {
+  const router = useRouter();
+
+  const nowDate = new Date();
+
   return (
     <>
       <Head>
@@ -32,7 +38,7 @@ export default function CarSelection() {
           </div>
 
           <div className={styles.listofcars__taxis}>
-            <p>03 dekabr, yakshanba</p>
+            <p>{dayjs(nowDate).format("DD - MMMM - YYYY")}</p>
             <h1>
               <span>
                 TOSHKENT <HiArrowLongRight /> SAMARQAND
@@ -68,7 +74,12 @@ export default function CarSelection() {
                   {Intl.NumberFormat("en-En").format(100000)} {"so'm"}
                 </p>
               </div>
-              <Button type={"primary"}>Yuborish</Button>
+              <Button
+                type={"primary"}
+                onClick={() => router.push("/choose-place")}
+              >
+                Yuborish
+              </Button>
             </div>
           </div>
         </div>
