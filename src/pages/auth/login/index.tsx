@@ -4,6 +4,8 @@ import { Form, Input, Button, Alert } from "antd";
 import Link from "next/link";
 import { css } from "@emotion/css";
 import React from "react";
+import { GetStaticPropsContext } from "next";
+import { useTranslations } from "next-intl";
 
 type FieldType = {
   name?: string;
@@ -11,6 +13,7 @@ type FieldType = {
 };
 
 export default function Login() {
+  const t = useTranslations();
   const onFinish = (values: any) => {
     console.log(values);
   };
@@ -18,15 +21,17 @@ export default function Login() {
   return (
     <>
       <Head>
-        <title>Sign in</title>
+        <title>{t("Tizimga kirish")}</title>
       </Head>
       <main className={styles.login}>
         <div className={styles.login__form}>
           <div>
-            <h2>Tizimga kirish</h2>
+            <h2>{t("Tizimga kirish")}</h2>
             <Alert
               className={styles.login__alert}
-              message="Shaxsiy kabinetingizni himoya qilish maqsadida, parolingizni muntazam yangilab turishingizni tavsiya qilamiz."
+              message={t(
+                "Shaxsiy kabinetingizni himoya qilish maqsadida, parolingizni muntazam yangilab turishingizni tavsiya qilamiz",
+              )}
               type="warning"
             />
           </div>
@@ -34,10 +39,13 @@ export default function Login() {
             <Form.Item<FieldType>
               name="name"
               rules={[
-                { required: true, message: "Iltimos ismingizni kiriting 📝!" },
+                {
+                  required: true,
+                  message: t("Iltimos ismingizni kiriting", { icon: "📝!" }),
+                },
               ]}
             >
-              <Input placeholder={"Ismni kiriting 📝"} />
+              <Input placeholder={t("Ismni kiriting", { icon: "📝" })} />
             </Form.Item>
 
             <Form.Item<FieldType>
@@ -45,16 +53,18 @@ export default function Login() {
               rules={[
                 {
                   required: true,
-                  message: "Iltimos parolingizni kiriting 🔓!",
+                  message: t("Iltimos parolingizni kiriting", { icon: "🔓!" }),
                 },
               ]}
             >
-              <Input.Password placeholder={"Parolni kiriting 🔓"} />
+              <Input.Password
+                placeholder={t("Parolni kiriting", { icon: "🔓" })}
+              />
             </Form.Item>
 
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                Kirish
+                {t("Kirish")}
               </Button>
             </Form.Item>
           </Form>
@@ -66,10 +76,19 @@ export default function Login() {
               text-align: end;
             `}
           >
-            {"Ro'yxatdan o'tish"}
+            {t("Ro'yxatdan o'tish")}
           </Link>
         </div>
       </main>
     </>
   );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../../messages/${context.locale}.json`))
+        .default,
+    },
+  };
 }

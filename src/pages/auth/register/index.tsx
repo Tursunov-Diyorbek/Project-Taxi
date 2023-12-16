@@ -6,6 +6,8 @@ import { css } from "@emotion/css";
 import styles from "./index.module.sass";
 import { useRouter } from "next/router";
 import { PatternFormat } from "react-number-format";
+import { useTranslations } from "next-intl";
+import { GetStaticPropsContext } from "next";
 
 type FieldType = {
   name?: string;
@@ -28,6 +30,7 @@ const CustomPasswordInput = ({ ...rest }) => {
 export default function Register() {
   const [smsActive, setSMSnotActive] = useState<boolean>(false);
   const router = useRouter();
+  const t = useTranslations();
 
   const onFinish = (values: any) => {
     if (!smsActive) {
@@ -41,15 +44,17 @@ export default function Register() {
   return (
     <>
       <Head>
-        <title>Sign up</title>
+        <title>{t("Ro'yxatdan o'tish")}</title>
       </Head>
       <main className={styles.register}>
         <div className={styles.register__form}>
           <div>
-            <h2>{"Ro'yxatdan o'tish"}</h2>
+            <h2>{t("Ro'yxatdan o'tish")}</h2>
             <Alert
               className={styles.register__alert}
-              message="Shaxsiy kabinetingizni himoya qilish maqsadida, parolingizni muntazam yangilab turishingizni tavsiya qilamiz."
+              message={t(
+                "Shaxsiy kabinetingizni himoya qilish maqsadida, parolingizni muntazam yangilab turishingizni tavsiya qilamiz",
+              )}
               type="warning"
             />
           </div>
@@ -57,10 +62,13 @@ export default function Register() {
             <Form.Item<FieldType>
               name="name"
               rules={[
-                { required: true, message: "Iltimos ismingizni kiriting 📝!" },
+                {
+                  required: true,
+                  message: t("Iltimos ismingizni kiriting", { icon: "📝!" }),
+                },
               ]}
             >
-              <Input placeholder={"Ismni kiriting 📝"} />
+              <Input placeholder={t("Ismni kiriting", { icon: "📝" })} />
             </Form.Item>
 
             <Form.Item<FieldType>
@@ -68,11 +76,13 @@ export default function Register() {
               rules={[
                 {
                   required: true,
-                  message: "Iltimos parolingizni kiriting 🔓!",
+                  message: t("Iltimos parolingizni kiriting", { icon: "🔓!" }),
                 },
               ]}
             >
-              <Input.Password placeholder={"Parolni kiriting 🔓"} />
+              <Input.Password
+                placeholder={t("Parolni kiriting", { icon: "🔓" })}
+              />
             </Form.Item>
 
             <Form.Item<FieldType>
@@ -80,7 +90,7 @@ export default function Register() {
               rules={[
                 {
                   required: true,
-                  message: "Iltimos raqamingizni kiriting 📞!",
+                  message: t("Iltimos raqamingizni kiriting", { icon: "📞!" }),
                 },
               ]}
             >
@@ -93,17 +103,17 @@ export default function Register() {
                 rules={[
                   {
                     required: true,
-                    message: "Iltimos sms kiriting 📩!",
+                    message: t("Iltimos sms kiriting", { icon: "📩!" }),
                   },
                 ]}
               >
-                <Input placeholder={"Smsni kiriting 📩"} />
+                <Input placeholder={t("Smsni kiriting", { icon: "📩" })} />
               </Form.Item>
             )}
 
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                {smsActive ? "Kirish" : "SMS"}
+                {smsActive ? t("Kirish") : t("SMS")}
               </Button>
             </Form.Item>
           </Form>
@@ -115,10 +125,19 @@ export default function Register() {
               text-align: end;
             `}
           >
-            Kirish
+            {t("Kirish")}
           </Link>
         </div>
       </main>
     </>
   );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../../messages/${context.locale}.json`))
+        .default,
+    },
+  };
 }

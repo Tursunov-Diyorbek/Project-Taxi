@@ -9,6 +9,7 @@ import { usePathname } from "next/navigation";
 
 export default function Layout() {
   const t = useTranslations();
+  const router = useRouter();
   const { locale, locales, push } = useRouter();
   const pathname = usePathname();
 
@@ -23,10 +24,6 @@ export default function Layout() {
       push("/confirmation", undefined, { locale: value });
     } else if (pathname === "/taxi-page") {
       push("/taxi-page", undefined, { locale: value });
-    } else if (pathname === "/auth/login") {
-      push("/auth/login", undefined, { locale: value });
-    } else if (pathname === "/auth/register") {
-      push("/auth/register", undefined, { locale: value });
     }
   };
 
@@ -44,7 +41,9 @@ export default function Layout() {
             display: flex;
             align-items: center;
             gap: 10px;
+            cursor: pointer;
           `}
+          onClick={() => router.push("/")}
         >
           <img src="" alt="logo" />
           <h2 style={{ margin: 0 }}>Taxi</h2>

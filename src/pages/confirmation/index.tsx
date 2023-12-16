@@ -5,14 +5,17 @@ import Steps from "@/components/Steps";
 import styles from "./index.module.sass";
 import { Button, Result } from "antd";
 import { useRouter } from "next/router";
+import { GetStaticPropsContext } from "next";
+import { useTranslations } from "next-intl";
 
 export default function Confirmation() {
   const router = useRouter();
+  const t = useTranslations();
 
   return (
     <>
       <Head>
-        <title>Tasdiqlash</title>
+        <title>{t("Tasdiqlash")}</title>
       </Head>
       <main>
         <Layout />
@@ -20,10 +23,10 @@ export default function Confirmation() {
         <div className={styles.confirmation}>
           <Result
             status="success"
-            title="Tabriklayman muvaffaqiyatli yakunlandi!"
+            title={t("Tabriklayman muvaffaqiyatli yakunlandi!")}
             extra={[
               <Button type="primary" onClick={() => router.push("/")}>
-                Bosh menyuga qaytish
+                {t("Bosh sahifaga qaytish")}
               </Button>,
             ]}
           />
@@ -31,4 +34,13 @@ export default function Confirmation() {
       </main>
     </>
   );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../messages/${context.locale}.json`))
+        .default,
+    },
+  };
 }

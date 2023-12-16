@@ -13,6 +13,8 @@ import {
   MdOutlineVerticalAlignBottom,
 } from "react-icons/md";
 import { css } from "@emotion/css";
+import { GetStaticPropsContext } from "next";
+import { useTranslations } from "next-intl";
 
 const CustomPasswordInput = ({ ...rest }) => {
   return (
@@ -38,6 +40,7 @@ type FieldType = {
 };
 
 export default function TaxiPage() {
+  const t = useTranslations();
   const [plaseOne, setPlaseOne] = useState<boolean>(false);
   const [plaseTwo, setPlaseTwo] = useState<boolean>(false);
   const [plaseThree, setPlaseThree] = useState<boolean>(false);
@@ -49,7 +52,7 @@ export default function TaxiPage() {
   return (
     <>
       <Head>
-        <title>Taksi sahifasi</title>
+        <title>{t("Taksi sahifasi")}</title>
       </Head>
       <main>
         <div className={styles.taxiPage}>
@@ -57,16 +60,24 @@ export default function TaxiPage() {
             <Form onFinish={onFinish} layout={"vertical"}>
               <Form.Item<FieldType>
                 name="name"
-                rules={[{ required: true, message: "Please input your Name!" }]}
+                rules={[
+                  {
+                    required: true,
+                    message: t("Iltimos ismingizni kiriting!"),
+                  },
+                ]}
                 className={styles.taxiPage__input}
               >
-                <Input placeholder={"Ism"} prefix={<CiUser />} />
+                <Input placeholder={t("Ism")} prefix={<CiUser />} />
               </Form.Item>
 
               <Form.Item<FieldType>
                 name="number"
                 rules={[
-                  { required: true, message: "Please input your Number!" },
+                  {
+                    required: true,
+                    message: t("Iltimos raqamingizni kiriting!"),
+                  },
                 ]}
                 className={styles.taxiPage__input}
               >
@@ -78,7 +89,7 @@ export default function TaxiPage() {
                 className={styles.taxiPage__input}
               >
                 <Input
-                  placeholder={"Telegram link"}
+                  placeholder={t("Telegram link")}
                   prefix={<PiTelegramLogoThin />}
                 />
               </Form.Item>
@@ -86,7 +97,7 @@ export default function TaxiPage() {
               <Form.Item<FieldType>
                 name="price"
                 rules={[
-                  { required: true, message: "Please input your Price!" },
+                  { required: true, message: t("Iltimos narx kiriting!") },
                 ]}
                 className={styles.taxiPage__input}
               >
@@ -100,12 +111,15 @@ export default function TaxiPage() {
               <Form.Item<FieldType>
                 name="carModel"
                 rules={[
-                  { required: true, message: "Please input your Car model!" },
+                  {
+                    required: true,
+                    message: t("Iltimos avtomobil rusumini kiriting!"),
+                  },
                 ]}
                 className={styles.taxiPage__input}
               >
                 <Input
-                  placeholder={"Avtomobil rusumi"}
+                  placeholder={t("Avtomobil rusumi")}
                   prefix={<IoCarSportOutline />}
                 />
               </Form.Item>
@@ -113,11 +127,14 @@ export default function TaxiPage() {
               <Form.Item<FieldType>
                 name="carNumber"
                 rules={[
-                  { required: true, message: "Please input your Car number!" },
+                  {
+                    required: true,
+                    message: t("Iltimos avtomobil raqamini kiriting!"),
+                  },
                 ]}
                 className={styles.taxiPage__input}
               >
-                <Input placeholder={"Avtomobil raqami"} prefix={"#"} />
+                <Input placeholder={t("Avtomobil raqami")} prefix={"#"} />
               </Form.Item>
 
               <Form.Item<FieldType>
@@ -125,13 +142,13 @@ export default function TaxiPage() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Departure time!",
+                    message: t("Iltimos jo'nash vaqtini kiriting!"),
                   },
                 ]}
                 className={styles.taxiPage__input}
               >
                 <Input
-                  placeholder={"Jo'nash vaqti"}
+                  placeholder={t("Jo'nash vaqti")}
                   prefix={<CiCalendarDate />}
                 />
               </Form.Item>
@@ -141,13 +158,13 @@ export default function TaxiPage() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Where!",
+                    message: t("Qayerdan!"),
                   },
                 ]}
                 className={styles.taxiPage__input}
               >
                 <Input
-                  placeholder={"Qayerdan"}
+                  placeholder={t("Qayerdan")}
                   prefix={<MdOutlineWhereToVote />}
                 />
               </Form.Item>
@@ -157,13 +174,13 @@ export default function TaxiPage() {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your Where to!",
+                    message: t("Qayerga!"),
                   },
                 ]}
                 className={styles.taxiPage__input}
               >
                 <Input
-                  placeholder={"Qayerga"}
+                  placeholder={t("Qayerga")}
                   prefix={<MdOutlineWhereToVote />}
                 />
               </Form.Item>
@@ -180,7 +197,7 @@ export default function TaxiPage() {
                     width: 100%;
                   `}
                 >
-                  Tasdiqlash
+                  {t("Tasdiqlash")}
                 </Button>
               </Form.Item>
             </Form>
@@ -189,7 +206,8 @@ export default function TaxiPage() {
 
         <div className={styles.taxiPage__carImage}>
           <h2>
-            {"Bo'sh o'rindiqlarni belgilang"} <MdOutlineVerticalAlignBottom />
+            {t("Bo'sh o'rindiqlarni belgilang")}{" "}
+            <MdOutlineVerticalAlignBottom />
           </h2>
 
           <div className={styles.taxiPage__carDiv}>
@@ -239,4 +257,13 @@ export default function TaxiPage() {
       </main>
     </>
   );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../messages/${context.locale}.json`))
+        .default,
+    },
+  };
 }
