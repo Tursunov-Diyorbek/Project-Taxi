@@ -25,7 +25,11 @@ export default function Confirmation() {
             status="success"
             title={t("Tabriklayman muvaffaqiyatli yakunlandi!")}
             extra={[
-              <Button type="primary" onClick={() => router.push("/")}>
+              <Button
+                key="back-to-home"
+                type="primary"
+                onClick={() => router.push("/")}
+              >
                 {t("Bosh sahifaga qaytish")}
               </Button>,
             ]}
