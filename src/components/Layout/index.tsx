@@ -36,28 +36,21 @@ export default function Layout() {
       `}
     >
       <div className={styles.layout}>
-        <div
-          className={css`
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-          `}
-          onClick={() => router.push("/")}
-        >
+        <div className={styles.layout__logo} onClick={() => router.push("/")}>
           <img src="" alt="logo" />
-          <h2 style={{ margin: 0 }}>Taxi</h2>
+          <h2>ExpressGo</h2>
         </div>
         <div
           className={css`
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
           `}
         >
           <Space wrap>
             <Select
               defaultValue={locale}
+              bordered={false}
               onChange={changeLanguage}
               options={[
                 {
@@ -72,7 +65,7 @@ export default function Layout() {
                     >
                       <img
                         src="../../../Images/Flag_of_Uzbekistan.svg.png"
-                        alt="Uzb"
+                        alt="Uz"
                         style={{
                           width: "15px",
                           height: "15px",
@@ -95,7 +88,7 @@ export default function Layout() {
                     >
                       <img
                         src="../../../Images/Flag_of_Russia.svg.png"
-                        alt="Uzb"
+                        alt="Ru"
                         style={{
                           width: "15px",
                           height: "15px",
