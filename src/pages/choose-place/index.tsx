@@ -1,7 +1,7 @@
 import Steps from "@/components/Steps";
 import React, { useState } from "react";
 import styles from "./index.module.sass";
-import { Tag, Button, Form, Input, Select } from "antd";
+import { Tag, Button, Form, Input } from "antd";
 import { SiTelegram } from "react-icons/si";
 import {
   MdOutlineAccessTime,
@@ -15,29 +15,60 @@ import { FaUserCircle } from "react-icons/fa";
 import Head from "next/head";
 import { HiArrowLongRight } from "react-icons/hi2";
 import Layout from "@/components/Layout";
+import { useRouter } from "next/router";
+import { useTranslations } from "next-intl";
+import { GetStaticPropsContext } from "next";
+import { PatternFormat } from "react-number-format";
 
 type FieldType = {
-  surname?: string;
   name?: string;
-  age?: number;
   number?: string;
-  gender?: string;
 };
 
-const ChoosePlace = () => {
+const CustomPasswordInput = ({ ...rest }) => {
+  return (
+    <PatternFormat
+      format="+998 (##) ### ## ##"
+      allowEmptyFormatting
+      customInput={Input}
+      {...rest}
+    />
+  );
+};
+
+export default function ChoosePlace() {
+  const router = useRouter();
+  const t = useTranslations();
+
   const [plaseOne, setPlaseOne] = useState<boolean>(false);
   const [plaseTwo, setPlaseTwo] = useState<boolean>(false);
   const [plaseThree, setPlaseThree] = useState<boolean>(false);
   const [plaseFour, setPlaseFour] = useState<boolean>(false);
+  const [count, setCount] = useState<number>(0);
+
+  const price = 100000;
+
+  const allButton = () => {
+    if (plaseOne === false) setPlaseOne(true);
+
+    if (plaseTwo === false) setPlaseTwo(true);
+
+    if (plaseThree === false) setPlaseThree(true);
+
+    if (plaseFour === false) setPlaseFour(true);
+
+    setCount(price * 4);
+  };
 
   const onFinish = (values: any) => {
-    console.log("Success:", values);
+    console.log(values);
+    // router.push("/confirmation");
   };
 
   return (
     <>
       <Head>
-        <title>Joy Tanlash</title>
+        <title>{t("Joy tanlash")}</title>
       </Head>
       <main>
         <Layout />
@@ -118,33 +149,35 @@ const ChoosePlace = () => {
           </div>
           <div>
             <div className={styles.choosePlace__contentInfoOrder}>
-              <h3>Avtomobil(nomi) joyni tanlang</h3>
+              <h3>{t("Avtomobil (nomi) joyni tanlang")}</h3>
               <div className={styles.choosePlace__boxInfo2}>
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>
-                    {"Jami o'rindiqlar"}
+                    {t("Jami o'rindiqlar")}
                   </p>
                   <p>4</p>
                 </div>
-
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>
-                    {"Bosh o'rindiqlar"}
+                    {t("Bo'sh o'rindiqlar")}
                   </p>
                   <p>4</p>
                 </div>
-
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>
-                    {"Band o'rindiqlar"}
+                    {t("Band o'rindiqlar")}
                   </p>
                   <p>0</p>
                 </div>
-
                 <div className={styles.choosePlace__orderInfo}>
-                  <p className={styles.choosePlace__totalText}>Narxi</p>
-                  <p>100,000 {"so'm"}</p>
+                  <p className={styles.choosePlace__totalText}>{t("Narxi")}</p>
+                  <p>
+                    {Intl.NumberFormat("en-En").format(100000)} {t("so'm")}
+                  </p>
                 </div>
+                <Button type="primary" onClick={allButton}>
+                  {t("Hamma o'rindiqlarni belgilash")}
+                </Button>
               </div>
               <div className={styles.choosePlace__carDiv}>
                 <img
@@ -153,7 +186,12 @@ const ChoosePlace = () => {
                   className={styles.choosePlace__carDivImage}
                 />
                 <Button
-                  onClick={() => setPlaseThree(!plaseThree)}
+                  onClick={() => {
+                    setPlaseThree(!plaseThree);
+                    if (!plaseThree) {
+                      setCount((prev) => prev + price);
+                    } else setCount((prev) => prev - price);
+                  }}
                   className={css`
                     background: ${plaseThree ? "black" : "none"};
                     color: ${plaseThree ? "#fff" : "black"};
@@ -162,20 +200,26 @@ const ChoosePlace = () => {
                   3
                 </Button>
                 <Button
-                  onClick={() => setPlaseOne(!plaseOne)}
+                  onClick={() => {
+                    setPlaseOne(!plaseOne);
+                    if (!plaseOne) {
+                      setCount((prev) => prev + price);
+                    } else setCount((prev) => prev - price);
+                  }}
                   className={css`
                     background: ${plaseOne ? "black" : "none"};
                     color: ${plaseOne ? "#fff" : "black"};
                   `}
                 >
-                  {/*<img*/}
-                  {/*  src="../../../Images/photo_2023-12-10_19-35-48-removebg-preview.png"*/}
-                  {/*  alt="rasm"*/}
-                  {/*  style={{ width: "100%" }}*/}
-                  {/*/>*/}1
+                  1
                 </Button>
                 <Button
-                  onClick={() => setPlaseFour(!plaseFour)}
+                  onClick={() => {
+                    setPlaseFour(!plaseFour);
+                    if (!plaseFour) {
+                      setCount((prev) => prev + price);
+                    } else setCount((prev) => prev - price);
+                  }}
                   className={css`
                     background: ${plaseFour ? "black" : "none"};
                     color: ${plaseFour ? "#fff" : "black"};
@@ -184,7 +228,12 @@ const ChoosePlace = () => {
                   4
                 </Button>
                 <Button
-                  onClick={() => setPlaseTwo(!plaseTwo)}
+                  onClick={() => {
+                    setPlaseTwo(!plaseTwo);
+                    if (!plaseTwo) {
+                      setCount((prev) => prev + price);
+                    } else setCount((prev) => prev - price);
+                  }}
                   className={css`
                     background: ${plaseTwo ? "black" : "none"};
                     color: ${plaseTwo ? "#fff" : "black"};
@@ -195,89 +244,61 @@ const ChoosePlace = () => {
               </div>
             </div>
           </div>
-          {plaseOne && (
-            <div className={styles.choosePlace__userForm}>
-              <h2>{"1 - O'rindiq"}</h2>
-              <Form onFinish={onFinish} layout="vertical">
+          {plaseOne || plaseTwo || plaseThree || plaseFour ? (
+            <div className={styles.choosePlace__form}>
+              <h2>{t("O'zingiz haqingizda malumot bering!")}</h2>
+              <Form onFinish={onFinish}>
                 <Form.Item<FieldType>
-                  label="Familiyasi"
-                  name="surname"
-                  rules={[
-                    { required: true, message: "Please input your username!" },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-                <Form.Item<FieldType>
-                  label="Ismi"
                   name="name"
                   rules={[
-                    { required: true, message: "Please input your username!" },
+                    {
+                      required: true,
+                      message: t("Iltimos ismingizni kiriting!"),
+                    },
                   ]}
+                  className={styles.choosePlace__userInfos}
                 >
-                  <Input />
+                  <Input placeholder={t("Ism")} />
                 </Form.Item>
+
                 <Form.Item<FieldType>
-                  label="Yoshi"
-                  name="age"
-                  rules={[
-                    { required: true, message: "Please input your username!" },
-                  ]}
-                >
-                  <Input type={"number"} />
-                </Form.Item>
-                <Form.Item<FieldType>
-                  label="Raqami"
                   name="number"
                   rules={[
-                    { required: true, message: "Please input your Number!" },
+                    {
+                      required: true,
+                      message: t("Iltimos raqamingizni kiriting!"),
+                    },
                   ]}
+                  className={styles.choosePlace__userInfos}
                 >
-                  <Input />
+                  <CustomPasswordInput />
                 </Form.Item>
-                <Form.Item<FieldType>
-                  label="Jinsi"
-                  name="gender"
-                  rules={[
-                    { required: true, message: "Please input your username!" },
-                  ]}
-                >
-                  <Select
-                    onChange={onFinish}
-                    style={{ width: 100 }}
-                    options={[
-                      { value: "erkak", label: "Erkak" },
-                      { value: "ayol", label: "Ayol" },
-                    ]}
-                  />
+
+                <p>
+                  {Intl.NumberFormat("en-En").format(count)} {t("so'm")}
+                </p>
+
+                <Form.Item>
+                  <Button type="primary" htmlType={"submit"}>
+                    {t("Tasdiqlash")}
+                  </Button>
                 </Form.Item>
               </Form>
             </div>
-          )}
-          {plaseTwo && (
-            <div className={styles.choosePlace__userForm}>
-              <h2>{"2 - O'rindiq"}</h2>
-            </div>
-          )}
-          {plaseThree && (
-            <div className={styles.choosePlace__userForm}>
-              <h2>{"3 - O'rindiq"}</h2>
-            </div>
-          )}
-          {plaseFour && (
-            <div className={styles.choosePlace__userForm}>
-              <h2>{"4 - O'rindiq"}</h2>
-            </div>
+          ) : (
+            ""
           )}
         </div>
-        <footer className={styles.footer}>
-          <div className={styles.footer__button}>
-            <Button type="primary">Tasdiqlash</Button>
-          </div>
-        </footer>
       </main>
     </>
   );
-};
+}
 
-export default ChoosePlace;
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../messages/${context.locale}.json`))
+        .default,
+    },
+  };
+}

@@ -1,12 +1,30 @@
 import styles from "./index.module.sass";
 import { css } from "@emotion/css";
 import { Space, Select } from "antd";
+import { PiUserCircleLight } from "react-icons/pi";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 
 export default function Layout() {
+  const t = useTranslations();
+  const router = useRouter();
+  const { locale, locales, push } = useRouter();
   const pathname = usePathname();
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+
+  const changeLanguage = (value: string) => {
+    if (pathname === "/") {
+      push("/", undefined, { locale: value });
+    } else if (pathname === "/car-selection") {
+      push("/car-selection", undefined, { locale: value });
+    } else if (pathname === "/choose-place") {
+      push("/choose-place", undefined, { locale: value });
+    } else if (pathname === "/confirmation") {
+      push("/confirmation", undefined, { locale: value });
+    } else if (pathname === "/taxi-page") {
+      push("/taxi-page", undefined, { locale: value });
+    }
   };
 
   return (
@@ -18,17 +36,32 @@ export default function Layout() {
       `}
     >
       <div className={styles.layout}>
-        <div>
+        <div
+          className={css`
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+          `}
+          onClick={() => router.push("/")}
+        >
           <img src="" alt="logo" />
+          <h2 style={{ margin: 0 }}>Taxi</h2>
         </div>
-        <div>
+        <div
+          className={css`
+            display: flex;
+            align-items: center;
+            gap: 20px;
+          `}
+        >
           <Space wrap>
             <Select
-              defaultValue="uzb"
-              onChange={handleChange}
+              defaultValue={locale}
+              onChange={changeLanguage}
               options={[
                 {
-                  value: "uzb",
+                  value: "uz",
                   label: (
                     <span
                       className={css`
@@ -51,7 +84,7 @@ export default function Layout() {
                   ),
                 },
                 {
-                  value: "rus",
+                  value: "ru",
                   label: (
                     <span
                       className={css`
@@ -76,6 +109,19 @@ export default function Layout() {
               ]}
             />
           </Space>
+          <Link
+            href="/auth/login"
+            className={css`
+              text-decoration: none;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              color: #707070;
+            `}
+          >
+            <PiUserCircleLight />
+            {t("Kirish")}
+          </Link>
         </div>
       </div>
     </div>

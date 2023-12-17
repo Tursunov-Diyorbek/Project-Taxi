@@ -1,10 +1,14 @@
 import styles from "./index.module.sass";
-import { Space, Select, DatePicker, Button } from "antd";
+import { Select, DatePicker, Button } from "antd";
 import { CiCalendarDate, CiSearch } from "react-icons/ci";
-import { FaLongArrowAltRight } from "react-icons/fa";
 import type { DatePickerProps } from "antd";
+import { useRouter } from "next/router";
+import { useTranslations } from "next-intl";
 
 export default function HomePage() {
+  const t = useTranslations();
+  const router = useRouter();
+
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
@@ -19,16 +23,12 @@ export default function HomePage() {
         <div className={styles.homePage__filter}>
           <div className={styles.homePage__header}>
             <div className={styles.homePage__headerText}>
-              <h3>Chipta xarid qilish</h3>
-              <p>
-                {
-                  "Poyezd chiptasini xarid qilish uchun yo'nalish va sanani tanlang"
-                }
-              </p>
+              <h3>My Taxi</h3>
+              <p>{t("Bizda xammasi qulay va hamyonbop")}</p>
             </div>
           </div>
           <div className={styles.homePage__direction}>
-            <div>
+            <div className={styles.homePage__select}>
               <svg
                 width="24"
                 height="24"
@@ -50,24 +50,24 @@ export default function HomePage() {
                 />
               </svg>
               <Select
-                defaultValue="uzb"
                 onChange={handleChange}
                 showSearch
-                // bordered={false}
+                bordered={false}
+                className={styles.homePage__where}
+                placeholder={t("Qayerdan")}
                 options={[
                   {
-                    value: "uzb",
-                    label: <span>Uzb</span>,
+                    value: "toshkent",
+                    label: <span>Toshkent</span>,
                   },
                   {
-                    value: "rus",
-                    label: <span>Rus</span>,
+                    value: "samarqand",
+                    label: <span>Samarqand</span>,
                   },
                 ]}
               />
             </div>
-            <FaLongArrowAltRight style={{ fontSize: 25 }} />
-            <div>
+            <div className={styles.homePage__select}>
               <svg
                 width="24"
                 height="24"
@@ -89,30 +89,38 @@ export default function HomePage() {
                 />
               </svg>
               <Select
-                defaultValue="uzb"
                 onChange={handleChange}
                 showSearch
-                // bordered={false}
+                bordered={false}
+                className={styles.homePage__where}
+                placeholder={t("Qayerga")}
                 options={[
                   {
-                    value: "uzb",
-                    label: <span>Uzb</span>,
+                    value: "toshkent",
+                    label: <span>Toshkent</span>,
                   },
                   {
-                    value: "rus",
-                    label: <span>Rus</span>,
+                    value: "samarqand",
+                    label: <span>Samarqand</span>,
                   },
                 ]}
               />
             </div>
-            <div>
-              <CiCalendarDate />
-              <Space>
-                <DatePicker onChange={onChange} />
-              </Space>
+            <div className={styles.homePage__select}>
+              <CiCalendarDate style={{ fontSize: 20 }} />
+              <DatePicker
+                onChange={onChange}
+                bordered={false}
+                placeholder={t("Ketish vaqti")}
+                className={styles.homePage__where}
+                format={"DD.MM.YYYY"}
+              />
             </div>
-            <Button type="primary">
-              <CiSearch />
+            <Button
+              type="primary"
+              onClick={() => router.push("/car-selection")}
+            >
+              <CiSearch style={{ fontSize: 19 }} />
             </Button>
           </div>
         </div>

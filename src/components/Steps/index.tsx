@@ -1,13 +1,17 @@
 import styles from "./index.module.sass";
 import { usePathname } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 export default function Steps() {
   const pathname = usePathname();
+  const t = useTranslations();
 
   return (
     <div className={styles.carSelection}>
       <div className={styles.carSelection__steps}>
-        <div className={styles.carSelection__active}>Avtomobil tanlash</div>
+        <div className={styles.carSelection__active}>
+          {t("Avtomobil tanlash")}
+        </div>
         <span
           className={
             pathname === "/choose-place"
@@ -27,7 +31,7 @@ export default function Steps() {
                 : styles.carSelection__notActive
           }
         >
-          Joy tanlash
+          {t("Joy tanlash")}
         </div>
         <span
           className={
@@ -43,7 +47,7 @@ export default function Steps() {
               : styles.carSelection__notActive
           }
         >
-          Tasdiqlash
+          {t("Tasdiqlash")}
         </div>
       </div>
     </div>

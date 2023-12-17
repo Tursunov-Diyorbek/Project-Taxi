@@ -1,86 +1,50 @@
+import React from "react";
 import Head from "next/head";
-import React, { useState } from "react";
 import Layout from "@/components/Layout";
 import Steps from "@/components/Steps";
 import styles from "./index.module.sass";
-import { Form, Input, Button } from "antd";
-
-type FieldType = {
-  surname?: string;
-  name?: string;
-  number?: string;
-  sms?: string;
-};
+import { Button, Result } from "antd";
+import { useRouter } from "next/router";
+import { GetStaticPropsContext } from "next";
+import { useTranslations } from "next-intl";
 
 export default function Confirmation() {
-  const [smsActive, setSMSnotActive] = useState<boolean>(false);
-
-  const onFinish = (values: any) => {
-    if (!smsActive) {
-      console.log(values);
-      setSMSnotActive(true);
-    } else {
-      console.log("else", values);
-    }
-  };
+  const router = useRouter();
+  const t = useTranslations();
 
   return (
     <>
       <Head>
-        <title>Tasdiqlash</title>
+        <title>{t("Tasdiqlash")}</title>
       </Head>
       <main>
         <Layout />
         <Steps />
         <div className={styles.confirmation}>
-          <div className={styles.confirmation__form}>
-            <h2>Tasdiqlash</h2>
-            <Form onFinish={onFinish} layout="vertical">
-              <Form.Item<FieldType>
-                label="Familya"
-                name="surname"
-                rules={[
-                  { required: true, message: "Please input your Surname!" },
-                ]}
+          <Result
+            status="success"
+            title={t("Tabriklayman muvaffaqiyatli yakunlandi!")}
+            extra={[
+              <Button
+                key="back-to-home"
+                type="primary"
+                onClick={() => router.push("/")}
               >
-                <Input />
-              </Form.Item>
-              <Form.Item<FieldType>
-                label="Ism"
-                name="name"
-                rules={[{ required: true, message: "Please input your Name!" }]}
-              >
-                <Input />
-              </Form.Item>
-              <Form.Item<FieldType>
-                label="Raqam"
-                name="number"
-                rules={[
-                  { required: true, message: "Please input your Number!" },
-                ]}
-              >
-                <Input />
-              </Form.Item>
-              {smsActive && (
-                <Form.Item<FieldType>
-                  label="Sms"
-                  name="sms"
-                  rules={[
-                    { required: true, message: "Please input your SMS!" },
-                  ]}
-                >
-                  <Input />
-                </Form.Item>
-              )}
-              <Form.Item>
-                <Button type="primary" htmlType="submit">
-                  {smsActive === false ? "SMS" : "Tasdiqlash"}
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
+                {t("Bosh sahifaga qaytish")}
+              </Button>,
+            ]}
+          />
         </div>
       </main>
     </>
   );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../messages/${context.locale}.json`))
+        .default,
+    },
+  };
 }

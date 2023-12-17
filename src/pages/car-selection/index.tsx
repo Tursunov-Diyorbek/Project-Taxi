@@ -8,12 +8,20 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { FaTelegramPlane } from "react-icons/fa";
 import { Button } from "antd";
 import Layout from "@/components/Layout";
+import dayjs from "dayjs";
+import { useRouter } from "next/router";
+import { useTranslations } from "next-intl";
+import { GetStaticPropsContext } from "next";
 
 export default function CarSelection() {
+  const router = useRouter();
+  const t = useTranslations();
+  const nowDate = new Date();
+
   return (
     <>
       <Head>
-        <title>Avtomobil tanlash</title>
+        <title>{t("Avtomobil tanlash")}</title>
       </Head>
       <main>
         <Layout />
@@ -32,12 +40,12 @@ export default function CarSelection() {
           </div>
 
           <div className={styles.listofcars__taxis}>
-            <p>03 dekabr, yakshanba</p>
+            <p>{dayjs(nowDate).format("DD - MMMM - YYYY")}</p>
             <h1>
               <span>
-                TOSHKENT <HiArrowLongRight /> SAMARQAND
+                {t("TOSHKENT")} <HiArrowLongRight /> {t("SAMARQAND")}
               </span>{" "}
-              boradigan taksilar
+              {t("boradigan taksilar")}
             </h1>
           </div>
 
@@ -65,14 +73,28 @@ export default function CarSelection() {
               <div className={styles.listofcars__nineHundredpx}>
                 <p>Narx</p>
                 <p>
-                  {Intl.NumberFormat("en-En").format(100000)} {"so'm"}
+                  {Intl.NumberFormat("en-En").format(100000)} {t("so'm")}
                 </p>
               </div>
-              <Button type={"primary"}>Yuborish</Button>
+              <Button
+                type={"primary"}
+                onClick={() => router.push("/choose-place")}
+              >
+                {t("Yuborish")}
+              </Button>
             </div>
           </div>
         </div>
       </main>
     </>
   );
+}
+
+export async function getStaticProps(context: GetStaticPropsContext) {
+  return {
+    props: {
+      messages: (await import(`../../../messages/${context.locale}.json`))
+        .default,
+    },
+  };
 }
