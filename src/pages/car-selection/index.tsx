@@ -12,11 +12,19 @@ import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useTranslations } from "next-intl";
 import { GetStaticPropsContext } from "next";
+import { useState } from "react";
+import Loading from "@/components/Loading";
 
 export default function CarSelection() {
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const t = useTranslations();
   const nowDate = new Date();
+
+  const send = () => {
+    setLoading(true);
+    router.push("/choose-place");
+  };
 
   return (
     <>
@@ -26,6 +34,7 @@ export default function CarSelection() {
       <main>
         <Layout />
         <Steps />
+        {loading && <Loading />}
         <div className={styles.listofcars}>
           <div className={styles.listofcars__address}>
             <div>
@@ -76,10 +85,7 @@ export default function CarSelection() {
                   {Intl.NumberFormat("en-En").format(100000)} {t("so'm")}
                 </p>
               </div>
-              <Button
-                type={"primary"}
-                onClick={() => router.push("/choose-place")}
-              >
+              <Button type={"primary"} onClick={send}>
                 {t("Yuborish")}
               </Button>
             </div>

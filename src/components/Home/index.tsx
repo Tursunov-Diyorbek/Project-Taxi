@@ -4,8 +4,13 @@ import { CiCalendarDate, CiSearch } from "react-icons/ci";
 import type { DatePickerProps } from "antd";
 import { useRouter } from "next/router";
 import { useTranslations } from "next-intl";
+import { useState } from "react";
+import Loading from "@/components/Loading";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function HomePage() {
+  const [loading, setLoading] = useState<boolean>(false);
   const t = useTranslations();
   const router = useRouter();
 
@@ -17,13 +22,20 @@ export default function HomePage() {
     console.log(date, dateString);
   };
 
+  const search = () => {
+    setLoading(true);
+    router.push("/car-selection");
+  };
+
   return (
     <>
+      <ToastContainer />
+      {loading && <Loading />}
       <div className={styles.homePage}>
         <div className={styles.homePage__filter}>
           <div className={styles.homePage__header}>
             <div className={styles.homePage__headerText}>
-              <h3>My Taxi</h3>
+              <h3>Express Go</h3>
               <p>{t("Bizda xammasi qulay va hamyonbop")}</p>
             </div>
           </div>
@@ -116,10 +128,7 @@ export default function HomePage() {
                 format={"DD.MM.YYYY"}
               />
             </div>
-            <Button
-              type="primary"
-              onClick={() => router.push("/car-selection")}
-            >
+            <Button type="primary" onClick={search}>
               <CiSearch style={{ fontSize: 19 }} />
             </Button>
           </div>

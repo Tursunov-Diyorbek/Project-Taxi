@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Head from "next/head";
-import Link from "next/link";
 import { Form, Input, Button, Alert } from "antd";
 import { css } from "@emotion/css";
 import styles from "./index.module.sass";
@@ -8,6 +7,9 @@ import { useRouter } from "next/router";
 import { PatternFormat } from "react-number-format";
 import { useTranslations } from "next-intl";
 import { GetStaticPropsContext } from "next";
+import Loading from "@/components/Loading";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type FieldType = {
   name?: string;
@@ -29,6 +31,7 @@ const CustomPasswordInput = ({ ...rest }) => {
 
 export default function Register() {
   const [smsActive, setSMSnotActive] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const t = useTranslations();
 
@@ -36,9 +39,12 @@ export default function Register() {
     if (!smsActive) {
       console.log(values);
       setSMSnotActive(true);
+      // setLoading(true);
     } else {
       console.log("else", values);
-      router.push("/");
+      router.push("/auth/login");
+      setLoading(true);
+      toast.success("Login !");
     }
   };
   return (
@@ -46,6 +52,7 @@ export default function Register() {
       <Head>
         <title>{t("Ro'yxatdan o'tish")}</title>
       </Head>
+      {loading && <Loading />}
       <main className={styles.register}>
         <div className={styles.register__form}>
           <div>
@@ -118,15 +125,19 @@ export default function Register() {
             </Form.Item>
           </Form>
 
-          <Link
-            href="/auth/login"
+          <Button
+            type={"link"}
             className={css`
-              text-decoration: none;
               text-align: end;
+              padding: 0;
             `}
+            onClick={() => {
+              router.push("/auth/login");
+              setLoading(true);
+            }}
           >
             {t("Kirish")}
-          </Link>
+          </Button>
         </div>
       </main>
     </>

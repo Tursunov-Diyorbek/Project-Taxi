@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { useTranslations } from "next-intl";
 import { GetStaticPropsContext } from "next";
 import { PatternFormat } from "react-number-format";
+import Loading from "@/components/Loading";
 
 type FieldType = {
   name?: string;
@@ -37,6 +38,7 @@ const CustomPasswordInput = ({ ...rest }) => {
 };
 
 export default function ChoosePlace() {
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
   const t = useTranslations();
 
@@ -62,7 +64,8 @@ export default function ChoosePlace() {
 
   const onFinish = (values: any) => {
     console.log(values);
-    // router.push("/confirmation");
+    setLoading(true);
+    router.push("/confirmation");
   };
 
   return (
@@ -73,6 +76,7 @@ export default function ChoosePlace() {
       <main>
         <Layout />
         <Steps />
+        {loading && <Loading />}
         <div className={styles.choosePlace}>
           <div>
             <div className={styles.choosePlace__boxInfo}>

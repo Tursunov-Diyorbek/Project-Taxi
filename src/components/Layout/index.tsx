@@ -1,17 +1,24 @@
 import styles from "./index.module.sass";
 import { css } from "@emotion/css";
-import { Space, Select } from "antd";
+import { Space, Select, Button } from "antd";
 import { PiUserCircleLight } from "react-icons/pi";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
+import Loading from "@/components/Loading";
 
 export default function Layout() {
+  const [loading, setLoading] = useState<boolean>(false);
   const t = useTranslations();
   const router = useRouter();
   const { locale, locales, push } = useRouter();
   const pathname = usePathname();
+
+  const access = () => {
+    setLoading(true);
+    router.push("/auth/login");
+  };
 
   const changeLanguage = (value: string) => {
     if (pathname === "/") {
@@ -28,95 +35,99 @@ export default function Layout() {
   };
 
   return (
-    <div
-      className={css`
-        background-color: #fff;
-        box-shadow: 0 14px 15px -5px rgba(43, 43, 43, 0.2);
-        border-radius: 10px;
-      `}
-    >
-      <div className={styles.layout}>
-        <div className={styles.layout__logo} onClick={() => router.push("/")}>
-          <img src="" alt="logo" />
-          <h2>ExpressGo</h2>
-        </div>
-        <div
-          className={css`
-            display: flex;
-            align-items: center;
-            gap: 15px;
-          `}
-        >
-          <Space wrap>
-            <Select
-              defaultValue={locale}
-              bordered={false}
-              onChange={changeLanguage}
-              options={[
-                {
-                  value: "uz",
-                  label: (
-                    <span
-                      className={css`
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                      `}
-                    >
-                      <img
-                        src="../../../Images/Flag_of_Uzbekistan.svg.png"
-                        alt="Uz"
-                        style={{
-                          width: "15px",
-                          height: "15px",
-                          borderRadius: "3px",
-                        }}
-                      />{" "}
-                      Uzb
-                    </span>
-                  ),
-                },
-                {
-                  value: "ru",
-                  label: (
-                    <span
-                      className={css`
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-                      `}
-                    >
-                      <img
-                        src="../../../Images/Flag_of_Russia.svg.png"
-                        alt="Ru"
-                        style={{
-                          width: "15px",
-                          height: "15px",
-                          borderRadius: "3px",
-                        }}
-                      />{" "}
-                      Rus
-                    </span>
-                  ),
-                },
-              ]}
-            />
-          </Space>
-          <Link
-            href="/auth/login"
+    <>
+      {loading && <Loading />}
+      <div
+        className={css`
+          background-color: #fff;
+          box-shadow: 0 14px 15px -5px rgba(43, 43, 43, 0.2);
+          border-radius: 10px;
+        `}
+      >
+        <div className={styles.layout}>
+          <div className={styles.layout__logo} onClick={() => router.push("/")}>
+            <img src="" alt="logo" />
+            <h2>ExpressGo</h2>
+          </div>
+          <div
             className={css`
-              text-decoration: none;
               display: flex;
               align-items: center;
-              gap: 5px;
-              color: #707070;
+              gap: 15px;
             `}
           >
-            <PiUserCircleLight />
-            {t("Kirish")}
-          </Link>
+            <Space wrap>
+              <Select
+                defaultValue={locale}
+                bordered={false}
+                onChange={changeLanguage}
+                options={[
+                  {
+                    value: "uz",
+                    label: (
+                      <span
+                        className={css`
+                          display: flex;
+                          align-items: center;
+                          gap: 5px;
+                        `}
+                      >
+                        <img
+                          src="../../../Images/Flag_of_Uzbekistan.svg.png"
+                          alt="Uz"
+                          style={{
+                            width: "15px",
+                            height: "15px",
+                            borderRadius: "3px",
+                          }}
+                        />{" "}
+                        Uzb
+                      </span>
+                    ),
+                  },
+                  {
+                    value: "ru",
+                    label: (
+                      <span
+                        className={css`
+                          display: flex;
+                          align-items: center;
+                          gap: 5px;
+                        `}
+                      >
+                        <img
+                          src="../../../Images/Flag_of_Russia.svg.png"
+                          alt="Ru"
+                          style={{
+                            width: "15px",
+                            height: "15px",
+                            borderRadius: "3px",
+                          }}
+                        />{" "}
+                        Rus
+                      </span>
+                    ),
+                  },
+                ]}
+              />
+            </Space>
+            <Button
+              type={"link"}
+              className={css`
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                color: #707070;
+                padding: 0;
+              `}
+              onClick={access}
+            >
+              <PiUserCircleLight />
+              {t("Kirish")}
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,11 +1,14 @@
 import Head from "next/head";
 import styles from "./index.module.sass";
 import { Form, Input, Button, Alert } from "antd";
-import Link from "next/link";
 import { css } from "@emotion/css";
-import React from "react";
+import React, { useState } from "react";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
+import Loading from "@/components/Loading";
+import { useRouter } from "next/router";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type FieldType = {
   name?: string;
@@ -13,16 +16,23 @@ type FieldType = {
 };
 
 export default function Login() {
+  const [loading, setLoading] = useState<boolean>(false);
   const t = useTranslations();
+  const router = useRouter();
+
   const onFinish = (values: any) => {
     console.log(values);
+    setLoading(true);
+    router.push("/");
   };
 
   return (
     <>
+      <ToastContainer />
       <Head>
         <title>{t("Tizimga kirish")}</title>
       </Head>
+      {loading && <Loading />}
       <main className={styles.login}>
         <div className={styles.login__form}>
           <div>
@@ -69,15 +79,19 @@ export default function Login() {
             </Form.Item>
           </Form>
 
-          <Link
-            href="/auth/register"
+          <Button
+            type={"link"}
             className={css`
-              text-decoration: none;
               text-align: end;
+              padding: 0;
             `}
+            onClick={() => {
+              router.push("/auth/register");
+              setLoading(true);
+            }}
           >
             {t("Ro'yxatdan o'tish")}
-          </Link>
+          </Button>
         </div>
       </main>
     </>

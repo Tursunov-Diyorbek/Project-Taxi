@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import styles from "./index.module.sass";
 import Head from "next/head";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, DatePicker } from "antd";
 import { PatternFormat } from "react-number-format";
-import { CiUser, CiCalendarDate } from "react-icons/ci";
+import { CiUser } from "react-icons/ci";
 import { BsTelephone } from "react-icons/bs";
 import { PiTelegramLogoThin } from "react-icons/pi";
 import { GiMoneyStack } from "react-icons/gi";
@@ -15,6 +15,10 @@ import {
 import { css } from "@emotion/css";
 import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
+import Loading from "@/components/Loading";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import type { DatePickerProps } from "antd";
 
 const CustomPasswordInput = ({ ...rest }) => {
   return (
@@ -40,20 +44,30 @@ type FieldType = {
 };
 
 export default function TaxiPage() {
-  const t = useTranslations();
   const [plaseOne, setPlaseOne] = useState<boolean>(false);
   const [plaseTwo, setPlaseTwo] = useState<boolean>(false);
   const [plaseThree, setPlaseThree] = useState<boolean>(false);
   const [plaseFour, setPlaseFour] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const t = useTranslations();
+
+  const onChange: DatePickerProps["onChange"] = (date, dateString) => {
+    console.log(date, dateString);
+  };
+
   const onFinish = (values: any) => {
     console.log("Success:", values);
+    toast.success("Wow so easy!");
+    setLoading(true);
   };
 
   return (
     <>
+      <ToastContainer />
       <Head>
         <title>{t("Taksi sahifasi")}</title>
       </Head>
+      {loading && <Loading />}
       <main>
         <div className={styles.taxiPage}>
           <div className={styles.taxiPage__form}>
@@ -147,9 +161,13 @@ export default function TaxiPage() {
                 ]}
                 className={styles.taxiPage__input}
               >
-                <Input
+                <DatePicker
+                  onChange={onChange}
                   placeholder={t("Jo'nash vaqti")}
-                  prefix={<CiCalendarDate />}
+                  format={"DD.MM.YYYY"}
+                  className={css`
+                    width: 100%;
+                  `}
                 />
               </Form.Item>
 
