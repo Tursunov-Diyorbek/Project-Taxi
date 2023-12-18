@@ -40,13 +40,22 @@ export default function Layout() {
       <div
         className={css`
           background-color: #fff;
-          box-shadow: 0 14px 15px -5px rgba(43, 43, 43, 0.2);
+          box-shadow: 0 3px 11px 0 rgba(41, 41, 41, 0.2);
           border-radius: 10px;
         `}
       >
         <div className={styles.layout}>
-          <div className={styles.layout__logo} onClick={() => router.push("/")}>
-            <img src="" alt="logo" />
+          <div
+            className={styles.layout__logo}
+            onClick={() => {
+              router.push("/");
+              setLoading(true);
+            }}
+          >
+            <img
+              src="../../../Images/photo_2023-12-18_19-07-54-removebg-preview.png"
+              alt="logo"
+            />
             <h2>ExpressGo</h2>
           </div>
           <div

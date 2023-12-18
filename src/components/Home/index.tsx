@@ -8,6 +8,7 @@ import { useState } from "react";
 import Loading from "@/components/Loading";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaTelegram } from "react-icons/fa";
 
 export default function HomePage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -134,6 +135,14 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      <footer className={styles.footer}>
+        <div>
+          <p>© Express Go 2023</p>
+          <a href="https://t.me/Front_End_DeveIoper" target="_blank">
+            <FaTelegram /> {"Biz bilan bog'lanish"}
+          </a>
+        </div>
+      </footer>
     </>
   );
 }
