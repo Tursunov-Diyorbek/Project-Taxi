@@ -10,11 +10,13 @@ import { GetStaticPropsContext } from "next";
 import Loading from "@/components/Loading";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import axios from "@/utils/axios.config";
 
 type FieldType = {
   name?: string;
+  username?: string;
   password?: string;
-  number?: string;
+  phone_number?: string;
   sms?: string;
 };
 
@@ -35,16 +37,23 @@ export default function Register() {
   const router = useRouter();
   const t = useTranslations();
 
-  const onFinish = (values: any) => {
-    if (!smsActive) {
-      console.log(values);
-      setSMSnotActive(true);
-      // setLoading(true);
-    } else {
-      console.log("else", values);
-      router.push("/auth/login");
-      setLoading(true);
-      toast.success("Login !");
+  const onFinish = async (values: any) => {
+    setLoading(true);
+    try {
+      if (!smsActive) {
+        await axios.post(`/user/activation/`, {
+          phone_number: values.phone_number?.replaceAll(/[ ()]/g, ""),
+        });
+        setSMSnotActive(true);
+        setLoading(false);
+      } else {
+        console.log("else", values);
+        router.push("/auth/login");
+        setLoading(true);
+        toast.success("Login !");
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
   return (
@@ -79,6 +88,22 @@ export default function Register() {
             </Form.Item>
 
             <Form.Item<FieldType>
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: t("Iltimos foydalanuvchi nomini kiriting", {
+                    icon: "✏️!",
+                  }),
+                },
+              ]}
+            >
+              <Input
+                placeholder={t("Foydalanuvchi nomini kiriting", { icon: "✏️" })}
+              />
+            </Form.Item>
+
+            <Form.Item<FieldType>
               name="password"
               rules={[
                 {
@@ -93,7 +118,7 @@ export default function Register() {
             </Form.Item>
 
             <Form.Item<FieldType>
-              name="number"
+              name="phone_number"
               rules={[
                 {
                   required: true,

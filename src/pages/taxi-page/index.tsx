@@ -19,6 +19,7 @@ import Loading from "@/components/Loading";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import type { DatePickerProps } from "antd";
+import axios from "@/utils/axios.config";
 
 const CustomPasswordInput = ({ ...rest }) => {
   return (
@@ -32,15 +33,14 @@ const CustomPasswordInput = ({ ...rest }) => {
 };
 
 type FieldType = {
-  name?: string;
-  number?: string;
-  messange: string;
+  first_name?: string;
+  phone?: string;
+  account_tg: string;
   price?: number;
-  carModel?: string;
-  carNumber?: string;
-  departureTime?: string;
-  where?: string;
-  whereTo?: string;
+  model?: string;
+  date?: string;
+  from_place?: string;
+  to_place?: string;
 };
 
 export default function TaxiPage() {
@@ -55,10 +55,31 @@ export default function TaxiPage() {
     console.log(date, dateString);
   };
 
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
-    toast.success("Wow so easy!");
+  const onFinish = async (values: any) => {
     setLoading(true);
+    try {
+      // await axios.post("/driver", {
+      //   values,
+      //   seat: [
+      //     {
+      //       seat: 0,
+      //       is_booked: true,
+      //     },
+      //   ],
+      // });
+      console.log(values, {
+        seat: [
+          {
+            seat: 0,
+            is_booked: true,
+          },
+        ],
+      });
+      setLoading(false);
+      toast.success("Wow so easy!");
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -73,7 +94,7 @@ export default function TaxiPage() {
           <div className={styles.taxiPage__form}>
             <Form onFinish={onFinish} layout={"vertical"}>
               <Form.Item<FieldType>
-                name="name"
+                name="first_name"
                 rules={[
                   {
                     required: true,
@@ -86,7 +107,7 @@ export default function TaxiPage() {
               </Form.Item>
 
               <Form.Item<FieldType>
-                name="number"
+                name="phone"
                 rules={[
                   {
                     required: true,
@@ -99,7 +120,7 @@ export default function TaxiPage() {
               </Form.Item>
 
               <Form.Item<FieldType>
-                name="messange"
+                name="account_tg"
                 className={styles.taxiPage__input}
               >
                 <Input
@@ -123,7 +144,7 @@ export default function TaxiPage() {
               </Form.Item>
 
               <Form.Item<FieldType>
-                name="carModel"
+                name="model"
                 rules={[
                   {
                     required: true,
@@ -139,20 +160,7 @@ export default function TaxiPage() {
               </Form.Item>
 
               <Form.Item<FieldType>
-                name="carNumber"
-                rules={[
-                  {
-                    required: true,
-                    message: t("Iltimos avtomobil raqamini kiriting!"),
-                  },
-                ]}
-                className={styles.taxiPage__input}
-              >
-                <Input placeholder={t("Avtomobil raqami")} prefix={"#"} />
-              </Form.Item>
-
-              <Form.Item<FieldType>
-                name="departureTime"
+                name="date"
                 rules={[
                   {
                     required: true,
@@ -172,7 +180,7 @@ export default function TaxiPage() {
               </Form.Item>
 
               <Form.Item<FieldType>
-                name="where"
+                name="from_place"
                 rules={[
                   {
                     required: true,
@@ -188,7 +196,7 @@ export default function TaxiPage() {
               </Form.Item>
 
               <Form.Item<FieldType>
-                name="whereTo"
+                name="to_place"
                 rules={[
                   {
                     required: true,

@@ -9,6 +9,7 @@ import Loading from "@/components/Loading";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaTelegram } from "react-icons/fa";
+import { GetStaticPropsContext } from "next";
 
 export default function HomePage() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -77,6 +78,46 @@ export default function HomePage() {
                     value: "samarqand",
                     label: <span>Samarqand</span>,
                   },
+                  {
+                    value: "buxoro",
+                    label: <span>Buxoro</span>,
+                  },
+                  {
+                    value: "navoiy",
+                    label: <span>Navoiy</span>,
+                  },
+                  {
+                    value: "andijon",
+                    label: <span>Andijon</span>,
+                  },
+                  {
+                    value: "xorazm",
+                    label: <span>Xorazm</span>,
+                  },
+                  {
+                    value: "jizzax",
+                    label: <span>Jizzax</span>,
+                  },
+                  {
+                    value: "qashqadaryo",
+                    label: <span>Qashqadaryo</span>,
+                  },
+                  {
+                    value: "surxondaryo",
+                    label: <span>Surxondaryo</span>,
+                  },
+                  {
+                    value: "farg'ona",
+                    label: <span>{"Farg'ona"}</span>,
+                  },
+                  {
+                    value: "namangan",
+                    label: <span>Namangan</span>,
+                  },
+                  {
+                    value: "sirdaryo",
+                    label: <span>Sirdaryo</span>,
+                  },
                 ]}
               />
             </div>
@@ -113,8 +154,48 @@ export default function HomePage() {
                     label: <span>Toshkent</span>,
                   },
                   {
+                    value: "navoiy",
+                    label: <span>Navoiy</span>,
+                  },
+                  {
+                    value: "buxoro",
+                    label: <span>Buxoro</span>,
+                  },
+                  {
                     value: "samarqand",
                     label: <span>Samarqand</span>,
+                  },
+                  {
+                    value: "andijon",
+                    label: <span>Andijon</span>,
+                  },
+                  {
+                    value: "xorazm",
+                    label: <span>Xorazm</span>,
+                  },
+                  {
+                    value: "jizzax",
+                    label: <span>Jizzax</span>,
+                  },
+                  {
+                    value: "qashqadaryo",
+                    label: <span>Qashqadaryo</span>,
+                  },
+                  {
+                    value: "surxondaryo",
+                    label: <span>Surxondaryo</span>,
+                  },
+                  {
+                    value: "farg'ona",
+                    label: <span>{"Farg'ona"}</span>,
+                  },
+                  {
+                    value: "namangan",
+                    label: <span>Namangan</span>,
+                  },
+                  {
+                    value: "sirdaryo",
+                    label: <span>Sirdaryo</span>,
                   },
                 ]}
               />
@@ -139,7 +220,7 @@ export default function HomePage() {
         <div>
           <p>© Express Go 2023</p>
           <a href="https://t.me/Front_End_DeveIoper" target="_blank">
-            <FaTelegram /> {"Biz bilan bog'lanish"}
+            <FaTelegram /> {t("Biz bilan bog'lanish")}
           </a>
         </div>
       </footer>
