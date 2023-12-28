@@ -1,19 +1,26 @@
 import styles from "./index.module.sass";
 import { css } from "@emotion/css";
-import { Space, Select, Button } from "antd";
-import { PiUserCircleLight } from "react-icons/pi";
+import { Space, Select, Button, Dropdown } from "antd";
+import { PiUserCircleLight, PiUserCircleGearLight } from "react-icons/pi";
 import { useTranslations } from "next-intl";
 import { useRouter } from "next/router";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
+import type { MenuProps } from "antd";
 
 export default function Layout() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [token, setToken] = useState<string>("");
   const t = useTranslations();
   const router = useRouter();
   const { locale, locales, push } = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    const tokens = localStorage.getItem("Token") ?? "";
+    setToken(tokens);
+  }, []);
 
   const access = () => {
     setLoading(true);
@@ -34,6 +41,29 @@ export default function Layout() {
     }
   };
 
+  const items: MenuProps["items"] = [
+    {
+      label: t("Men taksichiman"),
+      key: "1",
+      onClick: () => {
+        router.push("/taxi-page");
+        setLoading(true);
+      },
+    },
+    {
+      type: "divider",
+    },
+    {
+      label: t("Chiqish"),
+      key: "3",
+      danger: true,
+      onClick: () => {
+        localStorage.clear();
+        location.reload();
+      },
+    },
+  ];
+
   return (
     <>
       {loading && <Loading />}
@@ -49,7 +79,7 @@ export default function Layout() {
             className={styles.layout__logo}
             onClick={() => {
               router.push("/");
-              setLoading(true);
+              pathname === "/" ? setLoading(false) : setLoading(true);
             }}
           >
             <img
@@ -120,20 +150,30 @@ export default function Layout() {
                 ]}
               />
             </Space>
-            <Button
-              type={"link"}
-              className={css`
-                display: flex;
-                align-items: center;
-                gap: 5px;
-                color: #707070;
-                padding: 0;
-              `}
-              onClick={access}
-            >
-              <PiUserCircleLight />
-              {t("Kirish")}
-            </Button>
+
+            {token ? (
+              <Dropdown menu={{ items }} trigger={["click"]}>
+                <PiUserCircleGearLight
+                  style={{ fontSize: 20, cursor: "pointer" }}
+                  onClick={(e: any) => e.preventDefault()}
+                />
+              </Dropdown>
+            ) : (
+              <Button
+                type={"link"}
+                className={css`
+                  display: flex;
+                  align-items: center;
+                  gap: 5px;
+                  color: #707070;
+                  padding: 0;
+                `}
+                onClick={access}
+              >
+                <PiUserCircleLight />
+                {t("Kirish")}
+              </Button>
+            )}
           </div>
         </div>
       </div>

@@ -7,11 +7,12 @@ import { GetStaticPropsContext } from "next";
 import { useTranslations } from "next-intl";
 import Loading from "@/components/Loading";
 import { useRouter } from "next/router";
-import { ToastContainer } from "react-toastify";
+import axios from "@/utils/axios.config";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type FieldType = {
-  name?: string;
+  username?: string;
   password?: string;
 };
 
@@ -20,10 +21,19 @@ export default function Login() {
   const t = useTranslations();
   const router = useRouter();
 
-  const onFinish = (values: any) => {
-    console.log(values);
+  const onFinish = async (values: any) => {
     setLoading(true);
-    router.push("/");
+    try {
+      const res = await axios.post("/user/login/", {
+        username: values.username,
+        password: values.password,
+      });
+      localStorage.setItem("Token", res?.data.tokens.access);
+      router.push("/");
+    } catch (e) {
+      setLoading(false);
+      toast.error(t("Parolingiz xato!"));
+    }
   };
 
   return (
@@ -47,7 +57,7 @@ export default function Login() {
           </div>
           <Form onFinish={onFinish} layout="vertical">
             <Form.Item<FieldType>
-              name="name"
+              name="username"
               rules={[
                 {
                   required: true,

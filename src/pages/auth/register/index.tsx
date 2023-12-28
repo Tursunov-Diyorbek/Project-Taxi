@@ -8,12 +8,12 @@ import { PatternFormat } from "react-number-format";
 import { useTranslations } from "next-intl";
 import { GetStaticPropsContext } from "next";
 import Loading from "@/components/Loading";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "@/utils/axios.config";
 
 type FieldType = {
-  name?: string;
+  first_name?: string;
   username?: string;
   password?: string;
   phone_number?: string;
@@ -34,6 +34,7 @@ const CustomPasswordInput = ({ ...rest }) => {
 export default function Register() {
   const [smsActive, setSMSnotActive] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [code, setCode] = useState<any>(null);
   const router = useRouter();
   const t = useTranslations();
 
@@ -41,16 +42,30 @@ export default function Register() {
     setLoading(true);
     try {
       if (!smsActive) {
-        await axios.post(`/user/activation/`, {
+        const res = await axios.post(`/user/activation/`, {
           phone_number: values.phone_number?.replaceAll(/[ ()]/g, ""),
         });
+        setCode(res?.data.code);
         setSMSnotActive(true);
         setLoading(false);
       } else {
-        console.log("else", values);
-        router.push("/auth/login");
         setLoading(true);
-        toast.success("Login !");
+        if (+values.sms === code) {
+          try {
+            await axios.post("/user/register/", {
+              first_name: values.first_name,
+              username: values.username,
+              phone_number: values.phone_number?.replaceAll(/[ ()]/g, ""),
+              password: code,
+            });
+            router.push("/auth/login");
+          } catch (e) {
+            console.log(e);
+          }
+        } else {
+          setLoading(false);
+          toast.error(t("Parolingiz xato!"));
+        }
       }
     } catch (e) {
       console.log(e);
@@ -58,6 +73,7 @@ export default function Register() {
   };
   return (
     <>
+      <ToastContainer />
       <Head>
         <title>{t("Ro'yxatdan o'tish")}</title>
       </Head>
@@ -76,7 +92,7 @@ export default function Register() {
           </div>
           <Form onFinish={onFinish} layout="vertical">
             <Form.Item<FieldType>
-              name="name"
+              name="first_name"
               rules={[
                 {
                   required: true,

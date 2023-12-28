@@ -4,8 +4,6 @@
   "Qayerdan": "Откуда",
   "Qayerga": "Kуда",
   "Ketish vaqti": "Время уходить",
-  "TOSHKENT": "ТАШКЕНТ",
-  "SAMARQAND": "САМАРКАНД",
   "boradigan taksilar": "исходящие такси",
   "so'm": "сум",
   "Yuborish": "Отправка",
@@ -50,5 +48,13 @@
   "O'zingiz haqingizda malumot bering!": "Расскажите нам о себе!",
   "Iltimos foydalanuvchi nomini kiriting": "Пожалуйста введите имя пользователя {icon}",
   "Foydalanuvchi nomini kiriting": "Введите имя пользователя {icon}",
-  "Biz bilan bog'lanish": "Связаться с нами"
+  "Biz bilan bog'lanish": "Связаться с нами",
+  "Iltimos manzilni kiriting!" : "Пожалуйста, введите адрес!",
+  "Iltimos vaqtni kiriting!": "Пожалуйста введите время!",
+  "Kechirasiz nomlari bir xil!": "Извините, имена одинаковые!",
+  "Malumotlar yo'q!": "Нет данных!",
+  "Muvaffaqiyatli yakunlandi!": "Завершено успешно!",
+  "Parolingiz xato!": "Ваш пароль неправильный!",
+  "Chiqish": "Выход",
+  "Men taksichiman": "Я водитель такси"
 }

@@ -49,34 +49,54 @@ export default function TaxiPage() {
   const [plaseThree, setPlaseThree] = useState<boolean>(false);
   const [plaseFour, setPlaseFour] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [day, setDay] = useState<string>("");
   const t = useTranslations();
 
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
+    setDay(dateString);
   };
 
   const onFinish = async (values: any) => {
     setLoading(true);
     try {
-      // await axios.post("/driver", {
-      //   values,
-      //   seat: [
-      //     {
-      //       seat: 0,
-      //       is_booked: true,
-      //     },
-      //   ],
-      // });
-      console.log(values, {
-        seat: [
-          {
-            seat: 0,
-            is_booked: true,
-          },
-        ],
-      });
+      await axios.post(
+        "/driver",
+        {
+          first_name: values.first_name,
+          last_name: "No Last Name",
+          phone: values.phone,
+          account_tg: values.account_tg,
+          model: values.model,
+          from_place: values.from_place,
+          to_place: values.to_place,
+          date: day,
+          price: values.price,
+          seat: [
+            {
+              seat: 1,
+              is_booked: plaseOne,
+            },
+            {
+              seat: 2,
+              is_booked: plaseTwo,
+            },
+            {
+              seat: 3,
+              is_booked: plaseThree,
+            },
+            {
+              seat: 4,
+              is_booked: plaseFour,
+            },
+          ],
+        },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("Token")}` },
+        },
+      );
+
       setLoading(false);
-      toast.success("Wow so easy!");
+      toast.success(t("Muvaffaqiyatli yakunlandi!"));
     } catch (e) {
       console.log(e);
     }
@@ -172,7 +192,7 @@ export default function TaxiPage() {
                 <DatePicker
                   onChange={onChange}
                   placeholder={t("Jo'nash vaqti")}
-                  format={"DD.MM.YYYY"}
+                  format={"YYYY-MM-DD"}
                   className={css`
                     width: 100%;
                   `}

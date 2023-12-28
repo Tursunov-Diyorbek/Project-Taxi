@@ -4,8 +4,6 @@
   "Qayerdan": "Qayerdan",
   "Qayerga": "Qayerga",
   "Ketish vaqti": "Ketish vaqti",
-  "TOSHKENT": "TOSHKENT",
-  "SAMARQAND": "SAMARQAND",
   "boradigan taksilar": "boradigan taksilar",
   "so'm": "so'm",
   "Yuborish": "Yuborish",
@@ -50,5 +48,13 @@
   "O'zingiz haqingizda malumot bering!": "O'zingiz haqingizda malumot bering!",
   "Iltimos foydalanuvchi nomini kiriting": "Iltimos foydalanuvchi nomini kiriting {icon}",
   "Foydalanuvchi nomini kiriting": "Foydalanuvchi nomini kiriting {icon}",
-  "Biz bilan bog'lanish": "Biz bilan bog'lanish"
+  "Biz bilan bog'lanish": "Biz bilan bog'lanish",
+  "Iltimos manzilni kiriting!": "Iltimos manzilni kiriting!",
+  "Iltimos vaqtni kiriting!": "Iltimos vaqtni kiriting!",
+  "Kechirasiz nomlari bir xil!": "Kechirasiz nomlar bir xil!",
+  "Malumotlar yo'q!": "Malumotlar yo'q!",
+  "Muvaffaqiyatli yakunlandi!": "Muvaffaqiyatli yakunlandi!",
+  "Parolingiz xato!": "Parolingiz xato!",
+  "Chiqish": "Chiqish",
+  "Men taksichiman": "Men taksichiman"
 }

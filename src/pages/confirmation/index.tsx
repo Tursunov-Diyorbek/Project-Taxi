@@ -25,7 +25,6 @@ export default function Confirmation() {
         <title>{t("Tasdiqlash")}</title>
       </Head>
       <main>
-        <Layout />
         <Steps />
         {loading && <Loading />}
         <div className={styles.confirmation}>

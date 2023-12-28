@@ -1,32 +1,75 @@
 import styles from "./index.module.sass";
-import { Select, DatePicker, Button } from "antd";
+import { Select, DatePicker, Button, Form } from "antd";
 import { CiCalendarDate, CiSearch } from "react-icons/ci";
 import type { DatePickerProps } from "antd";
 import { useRouter } from "next/router";
 import { useTranslations } from "next-intl";
-import { useState } from "react";
+import React, { useContext, useState } from "react";
 import Loading from "@/components/Loading";
-import { ToastContainer } from "react-toastify";
+import { FaTelegram, FaTelegramPlane } from "react-icons/fa";
+import Steps from "@/components/Steps";
+import dayjs from "dayjs";
+import { HiArrowLongRight } from "react-icons/hi2";
+import { FaArrowRightLong } from "react-icons/fa6";
+import axios from "@/utils/axios.config";
+import { css } from "@emotion/css";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaTelegram } from "react-icons/fa";
-import { GetStaticPropsContext } from "next";
+import { TaxiId } from "@/components/Context";
+import { number } from "prop-types";
 
 export default function HomePage() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [search, setSearch] = useState<boolean>(false);
+  const [date, setDate] = useState<string>("");
+  const [from, setFrom] = useState<string>("");
+  const [toFrom, settoFrom] = useState<string>("");
+  const [taxiDatas, setTaxiDatas] = useState<any>(null);
+  const { setTaxiId } = useContext<any>(TaxiId);
   const t = useTranslations();
   const router = useRouter();
+  const nowDate = new Date();
 
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+  const handleChange1 = (value: string) => {
+    setFrom(value);
+  };
+
+  const handleChange2 = (value: string) => {
+    settoFrom(value);
   };
 
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
+    setDate(dateString);
   };
 
-  const search = () => {
+  const searchBTN = async () => {
+    if (from === toFrom) {
+      return toast.warning(t("Kechirasiz nomlari bir xil!")), setSearch(false);
+    }
     setLoading(true);
-    router.push("/car-selection");
+
+    try {
+      const res = await axios.get(
+        `/search?from_place=${from}&to_place=${toFrom}&date=${date}`,
+      );
+      setLoading(false);
+      if (res.data.results.length === 0) {
+        toast.warning(t("Malumotlar yo'q!"));
+        setSearch(false);
+      } else {
+        setTaxiDatas(res.data?.results);
+        setSearch(true);
+      }
+    } catch (e) {
+      setLoading(false);
+    }
+  };
+
+  const send = (id: number) => {
+    // setTaxiId(id);
+    localStorage.setItem("TaxiID", id.toString());
+    setLoading(true);
+    router.push("/choose-place");
   };
 
   return (
@@ -64,7 +107,7 @@ export default function HomePage() {
                 />
               </svg>
               <Select
-                onChange={handleChange}
+                onChange={handleChange1}
                 showSearch
                 bordered={false}
                 className={styles.homePage__where}
@@ -143,7 +186,7 @@ export default function HomePage() {
                 />
               </svg>
               <Select
-                onChange={handleChange}
+                onChange={handleChange2}
                 showSearch
                 bordered={false}
                 className={styles.homePage__where}
@@ -207,15 +250,80 @@ export default function HomePage() {
                 bordered={false}
                 placeholder={t("Ketish vaqti")}
                 className={styles.homePage__where}
-                format={"DD.MM.YYYY"}
+                format={"YYYY-MM-DD"}
               />
             </div>
-            <Button type="primary" onClick={search}>
+            <Button
+              type="primary"
+              onClick={searchBTN}
+              disabled={from === "" || toFrom === ""}
+            >
               <CiSearch style={{ fontSize: 19 }} />
             </Button>
           </div>
         </div>
       </div>
+
+      {search && (
+        <div className={styles.lists}>
+          <Steps />
+          <div className={styles.lists__taxis}>
+            <p>{dayjs(nowDate).format("DD - MMMM - YYYY")}</p>
+            <h1>
+              <span>
+                {from.toUpperCase()} <HiArrowLongRight /> {toFrom.toUpperCase()}
+              </span>{" "}
+              {t("boradigan taksilar")}
+            </h1>
+          </div>
+          {taxiDatas?.map((item: any, index: number) => {
+            return (
+              <div className={styles.lists__cards} key={index}>
+                <div className={styles.lists__card}>
+                  <div className={styles.lists__direction}>
+                    <p>{item.from_place}</p>
+                    <FaArrowRightLong />
+                    <p>{item.to_place}</p>
+                  </div>
+                  <div className={styles.lists__nineHundredpx}>
+                    <p>Ism</p>
+                    <p>{item.first_name}</p>
+                  </div>
+                  <div className={styles.lists__nineHundredpx}>
+                    <p>Telefon raqam</p>
+                    <a href={`tel: ${item.phone}`}>{item.phone}</a>
+                  </div>
+                  <div className={styles.lists__nineHundredpx}>
+                    <p>Telegram</p>
+                    <a
+                      href={item.account_tg}
+                      className={css`
+                        display: flex;
+                        align-items: center;
+                        gap: 5px;
+                      `}
+                    >
+                      <FaTelegramPlane style={{ fontSize: 17 }} />
+                      {item.account_tg}
+                    </a>
+                  </div>
+                  <div className={styles.lists__nineHundredpx}>
+                    <p>Narx</p>
+                    <p>
+                      {Intl.NumberFormat("en-En").format(item.price)}{" "}
+                      {t("so'm")}
+                    </p>
+                  </div>
+                  <Button type={"primary"} onClick={() => send(item.id)}>
+                    {t("Yuborish")}
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       <footer className={styles.footer}>
         <div>
           <p>© Express Go 2023</p>

@@ -1,17 +1,9 @@
 import Steps from "@/components/Steps";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./index.module.sass";
 import { Tag, Button, Form, Input } from "antd";
-import { SiTelegram } from "react-icons/si";
-import {
-  MdOutlineAccessTime,
-  MdCall,
-  MdOutlineWhereToVote,
-  MdWhereToVote,
-  MdConnectWithoutContact,
-} from "react-icons/md";
+import { MdOutlineAccessTime } from "react-icons/md";
 import { css } from "@emotion/css";
-import { FaUserCircle } from "react-icons/fa";
 import Head from "next/head";
 import { HiArrowLongRight } from "react-icons/hi2";
 import Layout from "@/components/Layout";
@@ -20,10 +12,33 @@ import { useTranslations } from "next-intl";
 import { GetStaticPropsContext } from "next";
 import { PatternFormat } from "react-number-format";
 import Loading from "@/components/Loading";
+// import { TaxiId } from "@/components/Context";
+import axios from "@/utils/axios.config";
 
 type FieldType = {
-  name?: string;
-  number?: string;
+  first_name?: string;
+  phone?: string;
+};
+
+interface Seats {
+  id: number;
+  driver_id: number;
+  seat_id: number;
+  is_booked: boolean;
+}
+
+type DataTaxi = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  phone: string;
+  account_tg: string;
+  model: string;
+  from_place: string;
+  to_place: string;
+  date: string;
+  price: string;
+  seats: Seats[];
 };
 
 const CustomPasswordInput = ({ ...rest }) => {
@@ -39,6 +54,9 @@ const CustomPasswordInput = ({ ...rest }) => {
 
 export default function ChoosePlace() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [taxiData, setTaxiData] = useState<DataTaxi[]>([]);
+  // const { taxiId } = useContext<any>(TaxiId);
+  const [saveId, setSaveId] = useState<string>("");
   const router = useRouter();
   const t = useTranslations();
 
@@ -48,24 +66,76 @@ export default function ChoosePlace() {
   const [plaseFour, setPlaseFour] = useState<boolean>(false);
   const [count, setCount] = useState<number>(0);
 
-  const price = 100000;
+  const [oneSeat, setOneSeat] = useState([]);
+
+  useEffect(() => {
+    const id = localStorage.getItem("TaxiID") ?? "";
+    setSaveId(id);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/driver-list");
+        setTaxiData(response?.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const taxiUser: DataTaxi | undefined = taxiData?.find(
+    (item: DataTaxi): boolean => item.id === +saveId,
+  );
+
+  const seatsNumber: Seats[] | undefined = taxiUser?.seats.filter(
+    (item: any): boolean => item.is_booked === true,
+  );
+
+  const price: number = taxiUser && taxiUser.price ? +taxiUser.price : 0;
 
   const allButton = () => {
-    if (plaseOne === false) setPlaseOne(true);
+    if (!plaseOne) setPlaseOne(true);
 
-    if (plaseTwo === false) setPlaseTwo(true);
+    if (!plaseTwo) setPlaseTwo(true);
 
-    if (plaseThree === false) setPlaseThree(true);
+    if (!plaseThree) setPlaseThree(true);
 
-    if (plaseFour === false) setPlaseFour(true);
+    if (!plaseFour) setPlaseFour(true);
 
-    setCount(price * 4);
+    setCount(price * (seatsNumber?.length ?? 0));
   };
 
   const onFinish = (values: any) => {
-    console.log(values);
+    console.log(values, "seat", [
+      {
+        id: 1,
+        driver_id: 1,
+        seat_id: 1,
+        is_booked: true,
+      },
+      {
+        id: 2,
+        driver_id: 1,
+        seat_id: 2,
+        is_booked: true,
+      },
+      {
+        id: 3,
+        driver_id: 1,
+        seat_id: 3,
+        is_booked: true,
+      },
+      {
+        id: 4,
+        driver_id: 1,
+        seat_id: 4,
+        is_booked: false,
+      },
+    ]);
+
     setLoading(true);
-    router.push("/confirmation");
+    if (localStorage.getItem("Token")) return router.push("/confirmation");
+    else return router.push("/auth/login");
   };
 
   return (
@@ -83,59 +153,27 @@ export default function ChoosePlace() {
               <div className={styles.choosePlace__boxContent}>
                 <div className={styles.choosePlace__departure}>
                   <p className={styles.choosePlace__aboutUser}>
-                    Diko
-                    <FaUserCircle />
+                    {taxiUser?.first_name}
                   </p>
                   <p className={styles.choosePlace__region}>
-                    Toshkent:
-                    <MdOutlineWhereToVote
-                      className={css`
-                        color: #01c3a7;
-                      `}
-                    />
-                  </p>
-                  <p className={styles.choosePlace__TgandTel}>
-                    Boglanish
-                    <MdConnectWithoutContact
-                      className={css`
-                        color: #0175c3;
-                      `}
-                    />
+                    {taxiUser?.from_place}
                   </p>
                 </div>
                 <div className={styles.choosePlace__iconSvgRow}>
                   <HiArrowLongRight />
                 </div>
                 <div className={styles.choosePlace__arrive}>
-                  <p className={styles.choosePlace__userTel}>(90)000-00-00</p>
-                  <p className={styles.choosePlace__region}>
-                    <MdWhereToVote
-                      className={css`
-                        color: #0175c3;
-                      `}
-                    />
-                    :Samarqand
+                  <p className={styles.choosePlace__userTel}>
+                    <a href={`tel: ${taxiUser?.phone}`}>{taxiUser?.phone}</a>
                   </p>
-                  <div className={styles.choosePlace__media}>
-                    <SiTelegram
-                      className={css`
-                        color: #0175c3;
-                        cursor: pointer;
-                      `}
-                    />
-                    <MdCall
-                      className={css`
-                        color: #000000;
-                        cursor: pointer;
-                      `}
-                    />
-                  </div>
+                  <p className={styles.choosePlace__region}>
+                    {taxiUser?.to_place}
+                  </p>
                 </div>
               </div>
               <div className={styles.choosePlace__boxContent2}>
                 <div className={styles.departure2}>
-                  <Tag color="success">Avtomobil</Tag>
-                  <span className={styles.departure2__carNumber}>01A200AA</span>
+                  <Tag color="success">{taxiUser?.model}</Tag>
                   <div className={styles.departure2__content}>
                     <MdOutlineAccessTime
                       className={css`
@@ -146,7 +184,7 @@ export default function ChoosePlace() {
                       {"Jo'nash vaqtlari mahalliy vaqt bilan ko'rsatilgan."}
                     </p>
                   </div>
-                  <p className={styles.departure2__time}>13:40pm</p>
+                  <p className={styles.departure2__time}>{taxiUser?.date}</p>
                 </div>
               </div>
             </div>
@@ -165,18 +203,21 @@ export default function ChoosePlace() {
                   <p className={styles.choosePlace__totalText}>
                     {t("Bo'sh o'rindiqlar")}
                   </p>
-                  <p>4</p>
+                  <p>{seatsNumber?.length}</p>
                 </div>
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>
                     {t("Band o'rindiqlar")}
                   </p>
-                  <p>0</p>
+                  <p>{4 - (seatsNumber?.length ?? 0)}</p>
                 </div>
                 <div className={styles.choosePlace__orderInfo}>
                   <p className={styles.choosePlace__totalText}>{t("Narxi")}</p>
                   <p>
-                    {Intl.NumberFormat("en-En").format(100000)} {t("so'm")}
+                    {taxiUser && taxiUser.price
+                      ? Intl.NumberFormat("en-En").format(+taxiUser.price)
+                      : ""}{" "}
+                    {t("so'm")}
                   </p>
                 </div>
                 <Button type="primary" onClick={allButton}>
@@ -189,71 +230,155 @@ export default function ChoosePlace() {
                   alt="Car"
                   className={styles.choosePlace__carDivImage}
                 />
-                <Button
-                  onClick={() => {
-                    setPlaseThree(!plaseThree);
-                    if (!plaseThree) {
-                      setCount((prev) => prev + price);
-                    } else setCount((prev) => prev - price);
-                  }}
-                  className={css`
-                    background: ${plaseThree ? "black" : "none"};
-                    color: ${plaseThree ? "#fff" : "black"};
-                  `}
-                >
-                  3
-                </Button>
-                <Button
-                  onClick={() => {
-                    setPlaseOne(!plaseOne);
-                    if (!plaseOne) {
-                      setCount((prev) => prev + price);
-                    } else setCount((prev) => prev - price);
-                  }}
-                  className={css`
-                    background: ${plaseOne ? "black" : "none"};
-                    color: ${plaseOne ? "#fff" : "black"};
-                  `}
-                >
-                  1
-                </Button>
-                <Button
-                  onClick={() => {
-                    setPlaseFour(!plaseFour);
-                    if (!plaseFour) {
-                      setCount((prev) => prev + price);
-                    } else setCount((prev) => prev - price);
-                  }}
-                  className={css`
-                    background: ${plaseFour ? "black" : "none"};
-                    color: ${plaseFour ? "#fff" : "black"};
-                  `}
-                >
-                  4
-                </Button>
-                <Button
-                  onClick={() => {
-                    setPlaseTwo(!plaseTwo);
-                    if (!plaseTwo) {
-                      setCount((prev) => prev + price);
-                    } else setCount((prev) => prev - price);
-                  }}
-                  className={css`
-                    background: ${plaseTwo ? "black" : "none"};
-                    color: ${plaseTwo ? "#fff" : "black"};
-                  `}
-                >
-                  2
-                </Button>
+                {taxiUser?.seats[2].is_booked ? (
+                  <Button
+                    onClick={() => {
+                      if (taxiUser?.seats[2].is_booked === false) {
+                        setPlaseThree(!plaseThree);
+                        if (!plaseThree) {
+                          setCount((prev) => prev + price);
+                        } else setCount((prev) => prev - price);
+                      }
+                    }}
+                    className={css`
+                      background: black;
+                      color: #fff;
+                    `}
+                  >
+                    3
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      if (taxiUser?.seats[2].is_booked === false) {
+                        setPlaseThree(!plaseThree);
+                        if (!plaseThree) {
+                          setCount((prev) => prev + price);
+                        } else setCount((prev) => prev - price);
+                      }
+                    }}
+                    className={css`
+                      background: ${plaseThree ? "black" : "none"};
+                      color: ${plaseThree ? "#fff" : "black"};
+                    `}
+                  >
+                    3
+                  </Button>
+                )}
+                {taxiUser?.seats[0].is_booked ? (
+                  <Button
+                    onClick={() => {
+                      if (taxiUser?.seats[0].is_booked === false) {
+                        setPlaseOne(!plaseOne);
+                        if (!plaseOne) {
+                          setCount((prev) => prev + price);
+                        } else setCount((prev) => prev - price);
+                      }
+                    }}
+                    className={css`
+                      background: black;
+                      color: #fff;
+                    `}
+                  >
+                    1
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      if (taxiUser?.seats[0].is_booked === false) {
+                        setPlaseOne(!plaseOne);
+                        if (!plaseOne) {
+                          setCount((prev) => prev + price);
+                        } else setCount((prev) => prev - price);
+                      }
+                    }}
+                    className={css`
+                      background: ${plaseOne ? "black" : "none"};
+                      color: ${plaseOne ? "#fff" : "black"};
+                    `}
+                  >
+                    1
+                  </Button>
+                )}
+                {taxiUser?.seats[3].is_booked ? (
+                  <Button
+                    onClick={() => {
+                      if (taxiUser?.seats[3].is_booked === false) {
+                        setPlaseFour(!plaseFour);
+                        if (!plaseFour) {
+                          setCount((prev) => prev + price);
+                        } else setCount((prev) => prev - price);
+                      }
+                    }}
+                    className={css`
+                      background: black;
+                      color: #fff;
+                    `}
+                  >
+                    4
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      if (taxiUser?.seats[3].is_booked === false) {
+                        setPlaseFour(!plaseFour);
+                        if (!plaseFour) {
+                          setCount((prev) => prev + price);
+                        } else setCount((prev) => prev - price);
+                      }
+                    }}
+                    className={css`
+                      background: ${plaseFour ? "black" : "none"};
+                      color: ${plaseFour ? "#fff" : "black"};
+                    `}
+                  >
+                    4
+                  </Button>
+                )}
+                {taxiUser?.seats[1].is_booked ? (
+                  <Button
+                    onClick={() => {
+                      if (taxiUser?.seats[1].is_booked === false) {
+                        setPlaseTwo(!plaseTwo);
+                        if (!plaseTwo) {
+                          setCount((prev) => prev + price);
+                        } else setCount((prev) => prev - price);
+                      }
+                    }}
+                    className={css`
+                      background: black;
+                      color: #fff;
+                    `}
+                  >
+                    2
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      if (taxiUser?.seats[1].is_booked === false) {
+                        setPlaseTwo(!plaseTwo);
+                        if (!plaseTwo) {
+                          setCount((prev) => prev + price);
+                        } else setCount((prev) => prev - price);
+                      }
+                    }}
+                    className={css`
+                      background: ${plaseTwo ? "black" : "none"};
+                      color: ${plaseTwo ? "#fff" : "black"};
+                    `}
+                  >
+                    2
+                  </Button>
+                )}
               </div>
             </div>
           </div>
-          {plaseOne || plaseTwo || plaseThree || plaseFour ? (
+          {count > 0 ? (
             <div className={styles.choosePlace__form}>
               <h2>{t("O'zingiz haqingizda malumot bering!")}</h2>
               <Form onFinish={onFinish}>
                 <Form.Item<FieldType>
-                  name="name"
+                  name="first_name"
                   rules={[
                     {
                       required: true,
@@ -266,7 +391,7 @@ export default function ChoosePlace() {
                 </Form.Item>
 
                 <Form.Item<FieldType>
-                  name="number"
+                  name="phone"
                   rules={[
                     {
                       required: true,
