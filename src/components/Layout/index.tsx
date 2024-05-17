@@ -83,10 +83,10 @@ export default function Layout() {
             }}
           >
             <img
-              src="../../../Images/photo_2023-12-18_19-07-54-removebg-preview.png"
+              src="../../../Images/tezbor bonw.png"
               alt="logo"
             />
-            <h2>ExpressGo</h2>
+            <h2>TezBor</h2>
           </div>
           <div
             className={css`

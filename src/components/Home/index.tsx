@@ -50,7 +50,7 @@ export default function HomePage() {
 
     try {
       const res = await axios.get(
-        `/search?from_place=${from}&to_place=${toFrom}&date=${date}`,
+        `/search?from_place=${from}&to_place=${toFrom}&date=${date}`
       );
       setLoading(false);
       if (res.data.results.length === 0) {
@@ -80,7 +80,7 @@ export default function HomePage() {
         <div className={styles.homePage__filter}>
           <div className={styles.homePage__header}>
             <div className={styles.homePage__headerText}>
-              <h3>Express Go</h3>
+              <h3>TezBor</h3>
               <p>{t("Bizda xammasi qulay va hamyonbop")}</p>
             </div>
           </div>
@@ -326,8 +326,8 @@ export default function HomePage() {
 
       <footer className={styles.footer}>
         <div>
-          <p>© Express Go 2023</p>
-          <a href="https://t.me/Front_End_DeveIoper" target="_blank">
+          <p>© TezBor 2023</p>
+          <a href="https://t.me/Seva_2705" target="_blank">
             <FaTelegram /> {t("Biz bilan bog'lanish")}
           </a>
         </div>
